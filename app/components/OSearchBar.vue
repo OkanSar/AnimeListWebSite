@@ -61,7 +61,7 @@ function applyFilters(menuRef: any) {
       hide-details
       single-line
       color="orange"
-      class="tw-font-bold"
+      class="tw-font-bold tw-mt-14"
       @keydown.enter="onClickSearch"
   >
     <template v-slot:append-inner>

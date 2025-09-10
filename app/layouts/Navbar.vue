@@ -1,6 +1,6 @@
 <template>
-  <v-app-bar color="black" dark>
-    <v-container class="d-flex align-center">
+  <v-app-bar flat absolute class="transparent-bar" height="64">
+    <v-container class="d-flex align-center tw-text-white">
       <v-app-bar-title>MyAnimeList</v-app-bar-title>
       <v-spacer />
       <template v-if="!xs">
@@ -141,5 +141,9 @@ const register = () => alert('Kayıt ol tıklandı')
   padding: 0 !important;
   margin: 0 !important;
 }
-
+.transparent-bar {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: none !important;
+}
 </style>

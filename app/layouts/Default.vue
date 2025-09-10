@@ -5,7 +5,7 @@
       <Navbar />
 
       <!-- Ana içerik -->
-      <v-main class="tw-bg-black tw-min-h-screen tw-text-white">
+      <v-main class="tw-bg-black tw-min-h-screen tw-text-white tw-mt-[-64px]">
         <slot />
       </v-main>
 

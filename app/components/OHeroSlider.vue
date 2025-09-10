@@ -14,8 +14,8 @@ const props = defineProps<{
 
 <template>
   <v-carousel
-      class="full-screen-carousel"
-      height="620"
+      class="full-screen-carousel tw-min-h-[700px]"
+      height="700"
       show-arrows="hover"
       cycle
       hide-delimiter-background
@@ -43,7 +43,7 @@ const props = defineProps<{
 }
 
 .carousel-sheet {
-  height: 700px;
+  height: 700px; /* mobil varsayılan */
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -58,7 +58,6 @@ const props = defineProps<{
   color: white;
   text-shadow: 1px 1px 2px black;
   max-width: 50%;
-  margin-left: 5%;
 }
 
 .title {
@@ -73,6 +72,15 @@ const props = defineProps<{
   word-wrap: break-word;
 }
 
+@media (min-width: 1024px) {
+  .carousel-sheet {
+    height: 1000px; /* büyük ekran yüksekliği */
+  }
+  .overlay-text { max-width: 50%; }
+  .title { font-size: 35px; }
+  .description { font-size: 20px; }
+}
+
 @media (max-width: 1024px) {
   .overlay-text { max-width: 60%; }
   .title { font-size: 28px; }
@@ -80,28 +88,25 @@ const props = defineProps<{
 }
 
 @media (max-width: 768px) {
-  .overlay-text { max-width: 80%; }
+  .overlay-text {
+    max-width: 80%;
+    margin: 0 0 200px 20px;
+    text-align: center;
+  }
+
   .title { font-size: 24px; }
   .description { font-size: 16px; }
 }
 
 @media (max-width: 480px) {
-  .carousel-sheet {
-    background-repeat: no-repeat;
-    background-position: center;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 10px 5%;
-  }
-
   .overlay-text {
     max-width: 90%;
-    margin: 10px 0 0 0;
+    margin: 0 0 200px 20px;
     text-align: center;
   }
 
   .title { font-size: 20px; }
   .description { font-size: 14px; }
 }
+
 </style>
