@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     const { id } = event.context.params
 
     if (!id) throw createError({ statusCode: 400, statusMessage: "Anime ID gerekli" })
-
+ 
     const fields = [
         "id","title","main_picture","alternative_titles","start_date","end_date",
         "synopsis","mean","rank","popularity","num_list_users","num_scoring_users",
