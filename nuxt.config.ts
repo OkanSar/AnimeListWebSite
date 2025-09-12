@@ -4,4 +4,10 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', 'vuetify-nuxt-module'],
   css: ['~/assets/css/tailwind.css'],
+  runtimeConfig: {
+    malClientId: process.env.MAL_CLIENT_ID,
+    public: {
+      malClientId: process.env.MAL_CLIENT_ID
+    }
+  }
 })

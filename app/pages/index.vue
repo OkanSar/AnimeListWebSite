@@ -6,6 +6,8 @@ import slide4 from '~/assets/images/jujutsu-kaisen.jpg'
 import slide5 from '~/assets/images/tokyo-ghoul.jpg'
 import OSuggestionAnimes from "~/components/OSuggestionAnimes.vue";
 
+const poppulerAnimes = ref<any[]>([])
+
 const slides = [
   {
     img: slide1,
@@ -34,11 +36,16 @@ const slides = [
   },
 ]
 
+await $fetch('/api/anime/ranking')
+    .then((res) => {
+      poppulerAnimes.value = res.data || []
+    })
+
 </script>
 
 <template>
   <o-hero-slider :slides=slides />
-  <o-most-populer-animes />
+  <o-most-populer-animes :anime="poppulerAnimes" />
   <o-new-upcoming-animes />
   <o-suggestion-animes />
   <o-more-upcoming-animes />

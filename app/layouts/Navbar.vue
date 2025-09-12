@@ -1,7 +1,7 @@
 <template>
   <v-app-bar flat absolute class="transparent-bar" height="64">
     <v-container class="d-flex align-center tw-text-white">
-      <v-app-bar-title>MyAnimeList</v-app-bar-title>
+      <v-app-bar-title>OKANMİME</v-app-bar-title>
       <v-spacer />
       <template v-if="!xs">
         <v-btn v-for="link in navLinks" :key="link.text" text :to="link.to">
@@ -11,7 +11,7 @@
         <template v-if="!user">
           <v-btn text @click="login">Giriş Yap</v-btn>
           <v-btn text @click="register">Kayıt Ol</v-btn>
-          <v-btn @click="theme.toggle()" text="Dark Mod"><v-icon :icon="mdiAccount"/></v-btn>
+          <v-btn @click="theme.toggle()" text="Dark Mod"><v-icon :icon="mdiMenu"/></v-btn>
         </template>
 
         <template v-else>
@@ -40,7 +40,7 @@
 
       <template v-if="xs">
         <v-btn icon @click="drawer = true">
-          <v-icon :icon="mdiAccount" />
+          <v-icon icon="mdi-menu" />
         </v-btn>
       </template>
     </v-container>
@@ -105,7 +105,7 @@
 import { ref } from 'vue'
 import { useDisplay } from 'vuetify'
 import { useTheme } from 'vuetify'
-import {mdiAccount, mdiThemeLightDark} from '@mdi/js';
+import {mdiMenu, mdiThemeLightDark} from '@mdi/js';
 
 const theme = useTheme()
 const { xs } = useDisplay()

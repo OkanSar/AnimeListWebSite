@@ -74,7 +74,7 @@ const props = defineProps<{
 
 @media (min-width: 1024px) {
   .carousel-sheet {
-    height: 1000px; /* büyük ekran yüksekliği */
+    height: 1000px;
   }
   .overlay-text { max-width: 50%; }
   .title { font-size: 35px; }
