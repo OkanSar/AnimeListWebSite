@@ -7,7 +7,7 @@ import slide5 from '~/assets/images/tokyo-ghoul.jpg'
 import OSuggestionAnimes from "~/components/OSuggestionAnimes.vue";
 
 const poppulerAnimes = ref<any[]>([])
-const suggestedAnimes = ref<any[]>([])
+const suggestedAnimes = ref([])
 const pending = ref(true)
 const slides = [
   {

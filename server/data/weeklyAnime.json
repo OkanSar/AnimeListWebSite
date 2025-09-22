@@ -1,62 +1,67 @@
 {
-  "currentWeek": "2025-09-22T18:39:01.463Z",
-  "afterWeek": "2025-09-29T18:39:01.463Z",
+  "currentWeek": "2025-09-22T19:06:29.849Z",
+  "afterWeek": "2025-09-29T19:06:29.849Z",
+  "currentLetter": "ac",
   "animes": [
     {
-      "id": 20931,
-      "title": "Oneechan ga Kita",
+      "id": 43608,
+      "title": "Kaguya-sama wa Kokurasetai: Ultra Romantic",
       "main_picture": {
-        "medium": "https://cdn.myanimelist.net/images/anime/3/56415.jpg",
-        "large": "https://cdn.myanimelist.net/images/anime/3/56415l.jpg"
+        "medium": "https://cdn.myanimelist.net/images/anime/1160/122627.webp",
+        "large": "https://cdn.myanimelist.net/images/anime/1160/122627l.webp"
       },
-      "start_date": "2014-01-09",
-      "end_date": "2014-03-27",
-      "synopsis": "The story revolves around Tomoya Mizuhara, a 13-year-old boy who suddenly gains a big sister when his father remarries. 17-year-old Ichika is a little strange, and her affection for Tomoya is rather overwhelming, if not scary. On top of things, Ichika's friend Ruri is the ultimate sadist. Then there is Ichika's big-breasted quarter-Japanese friend Marina.\n\n(Source: ANN)",
-      "mean": 6.32,
-      "rank": 8358,
-      "popularity": 1948,
-      "num_list_users": 126980,
-      "num_scoring_users": 64280,
+      "start_date": "2022-04-09",
+      "end_date": "2022-06-25",
+      "synopsis": "The elite members of Shuchiin Academy's student council continue their competitive day-to-day antics. Council president Miyuki Shirogane clashes daily against vice-president Kaguya Shinomiya, each fighting tooth and nail to trick the other into confessing their romantic love. Kaguya struggles within the strict confines of her wealthy, uptight family, rebelling against her cold default demeanor as she warms to Shirogane and the rest of her friends.\n\nMeanwhile, council treasurer Yuu Ishigami suffers under the weight of his hopeless crush on Tsubame Koyasu, a popular upperclassman who helps to instill a new confidence in him. Miko Iino, the newest student council member, grows closer to the rule-breaking Ishigami while striving to overcome her own authoritarian moral code.\n\nAs love further blooms at Shuchiin Academy, the student council officers drag their outsider friends into increasingly comedic conflicts.\n\n[Written by MAL Rewrite]\n",
+      "mean": 8.97,
+      "rank": 14,
+      "popularity": 166,
+      "num_list_users": 1057452,
+      "num_scoring_users": 601314,
       "genres": [
         {
           "id": 4,
           "name": "Comedy"
         },
         {
-          "id": 36,
-          "name": "Slice of Life"
+          "id": 22,
+          "name": "Romance"
+        },
+        {
+          "id": 23,
+          "name": "School"
+        },
+        {
+          "id": 42,
+          "name": "Seinen"
         }
       ],
-      "num_episodes": 12,
+      "num_episodes": 13,
       "rating": "pg_13"
     },
     {
-      "id": 31490,
-      "title": "One Piece Film: Gold",
+      "id": 28851,
+      "title": "Koe no Katachi",
       "main_picture": {
-        "medium": "https://cdn.myanimelist.net/images/anime/1081/137690.jpg",
-        "large": "https://cdn.myanimelist.net/images/anime/1081/137690l.jpg"
+        "medium": "https://cdn.myanimelist.net/images/anime/1122/96435.jpg",
+        "large": "https://cdn.myanimelist.net/images/anime/1122/96435l.jpg"
       },
-      "start_date": "2016-07-23",
-      "end_date": "2016-07-23",
-      "synopsis": "Monkey D. Luffy and his Straw Hat Crew have finally arrived on Gran Tesoro, a ship carrying the largest entertainment city in the world. Drawn in by the chances of hitting the jackpot, the crew immediately head to the casino. There, they quickly find themselves on a winning streak, playing with what seems to be endless luck.\n\nWhen offered a special gamble by Gild Tesoro—the master of the city himself—the crew agrees, choosing to believe in their captain's luck. However, when they find themselves victims of a despicable scam, the crew quickly realize that there is something darker happening beneath the city's surface.\n\nLeft penniless and beaten down, the Straw Hat Crew are forced to rely on another gamble of a plan. With the help of a new friend or two, the group must work to reclaim what they've lost before time, and what remains of their luck, runs out.\n\n[Written by MAL Rewrite]",
-      "mean": 7.87,
-      "rank": 928,
-      "popularity": 1111,
-      "num_list_users": 242859,
-      "num_scoring_users": 145259,
+      "start_date": "2016-09-17",
+      "end_date": "2016-09-17",
+      "synopsis": "As a wild youth, elementary school student Shouya Ishida sought to beat boredom in the cruelest ways. When the deaf Shouko Nishimiya transfers into his class, Shouya and the rest of his class thoughtlessly bully her for fun. However, when her mother notifies the school, he is singled out and blamed for everything done to her. With Shouko transferring out of the school, Shouya is left at the mercy of his classmates. He is heartlessly ostracized all throughout elementary and middle school, while teachers turn a blind eye.\n\nNow in his third year of high school, Shouya is still plagued by his wrongdoings as a young boy. Sincerely regretting his past actions, he sets out on a journey of redemption: to meet Shouko once more and make amends.\n\nKoe no Katachi tells the heartwarming tale of Shouya's reunion with Shouko and his honest attempts to redeem himself, all while being continually haunted by the shadows of his past.\n \n[Written by MAL Rewrite]",
+      "mean": 8.93,
+      "rank": 18,
+      "popularity": 19,
+      "num_list_users": 2523809,
+      "num_scoring_users": 1737875,
       "genres": [
         {
-          "id": 1,
-          "name": "Action"
+          "id": 46,
+          "name": "Award Winning"
         },
         {
-          "id": 2,
-          "name": "Adventure"
-        },
-        {
-          "id": 10,
-          "name": "Fantasy"
+          "id": 8,
+          "name": "Drama"
         },
         {
           "id": 27,

@@ -33,25 +33,15 @@ export default defineEventHandler(async (event) => {
 
     const isNewWeek = !stored.afterWeek || new Date(stored.afterWeek) <= today
     let weeklyAnimes = stored.animes || []
-    let currentLetter: string = stored.currentLetter || "a"
 
     if (isNewWeek || force) {
-        // 1. Harfi al
-        let letter = currentLetter
-        if (force) {
-            // force durumunda stored.currentLetter kullan, değiştirme
-            letter = stored.currentLetter || "a"
-        }
-
-        // 2. API çağrısı
-        const searchUrl = `https://api.myanimelist.net/v2/anime?q=${letter}&limit=50&fields=id`
+        const searchUrl = `https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=50&fields=id`
         const searchResponse: any = await $fetch(searchUrl, {
             headers: { "X-MAL-CLIENT-ID": clientId },
         })
 
         const allAnimes = searchResponse.data.map((item: any) => item.node)
 
-        // 3. Rastgele 2 seç
         const selectedIds: number[] = []
         while (selectedIds.length < 2 && allAnimes.length > 0) {
             const idx = Math.floor(Math.random() * allAnimes.length)
@@ -66,14 +56,9 @@ export default defineEventHandler(async (event) => {
             })
         )
 
-        // 4. Sonraki harfi hazırla
-        let nextLetter = String.fromCharCode(letter.charCodeAt(0) + 1)
-        if (letter === "z") nextLetter = "a"
-
         stored = {
             currentWeek: today.toISOString(),
             afterWeek: afterWeek.toISOString(),
-            currentLetter: nextLetter,
             animes: weeklyAnimes,
         }
 
@@ -83,7 +68,6 @@ export default defineEventHandler(async (event) => {
     return {
         currentWeek: stored.currentWeek,
         afterWeek: stored.afterWeek,
-        letter: stored.currentLetter || currentLetter,
         data: weeklyAnimes,
     }
 })
