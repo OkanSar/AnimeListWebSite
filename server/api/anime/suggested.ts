@@ -15,7 +15,6 @@ export default defineEventHandler(async (event) => {
     ].join(",")
 
     const query = getQuery(event)
-    const force = query.force === "true"
     const page = Number(query.page || 1)
     const limit = 50
     const offset = (page - 1) * limit
@@ -36,7 +35,7 @@ export default defineEventHandler(async (event) => {
     const isNewWeek = !stored.afterWeek || new Date(stored.afterWeek) <= today
     let weeklyAnimes = stored.animes || []
 
-    if (isNewWeek || force) {
+    if (isNewWeek) {
         const searchUrl = `https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&offset=${offset}&limit=50&fields=id`
         const searchResponse: any = await $fetch(searchUrl, {
             headers: { "X-MAL-CLIENT-ID": clientId },
