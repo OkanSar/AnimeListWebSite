@@ -1,10 +1,7 @@
 <template>
   <v-app>
     <v-layout>
-      <!-- Navbar -->
-      <Navbar />
-
-      <!-- Ana içerik -->
+      <Navbar :theme="theme" />
       <v-main class="tw-bg-black tw-min-h-screen tw-text-white tw-mt-[-64px]">
         <slot />
       </v-main>
@@ -14,5 +11,7 @@
 </template>
 
 <script setup lang="ts">
+import { useTheme } from "vuetify";
 import Navbar from '~/layouts/Navbar.vue'
+const theme = useTheme();
 </script>

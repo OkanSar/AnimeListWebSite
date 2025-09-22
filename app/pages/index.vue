@@ -7,7 +7,8 @@ import slide5 from '~/assets/images/tokyo-ghoul.jpg'
 import OSuggestionAnimes from "~/components/OSuggestionAnimes.vue";
 
 const poppulerAnimes = ref<any[]>([])
-
+const suggestedAnimes = ref<any[]>([])
+const pending = ref(true)
 const slides = [
   {
     img: slide1,
@@ -36,18 +37,28 @@ const slides = [
   },
 ]
 
-await $fetch('/api/anime/ranking')
-    .then((res) => {
-      poppulerAnimes.value = res.data || []
-    })
-
+const loadPage = async () => {
+  try {
+    const res = await $fetch('/api/anime/ranking')
+    const sug = await $fetch('/api/anime/suggested')
+    poppulerAnimes.value = res.data || []
+    suggestedAnimes.value = sug.data || []
+  } catch (err) {
+    console.error('Ranking API error:', err)
+  } finally {
+    pending.value = false
+  }
+}
+onMounted(() => {
+  loadPage()
+})
 </script>
 
 <template>
-  <o-hero-slider :slides=slides />
-  <o-most-populer-animes :anime="poppulerAnimes" />
+  <o-hero-slider :slides="slides" :pending="pending" />
+  <o-most-populer-animes :anime="poppulerAnimes" :pending="pending" />
   <o-new-upcoming-animes />
-  <o-suggestion-animes />
+  <o-suggestion-animes :suggest="suggestedAnimes" :pending="pending" />
   <o-more-upcoming-animes />
 </template>
 

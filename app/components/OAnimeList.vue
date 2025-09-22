@@ -15,6 +15,18 @@ const props = defineProps({
   <v-container class="tw-px-6 tw-mt-10" fluid>
     <v-row>
       <v-col
+          v-if="pending"
+          v-for="n in 24"
+          :key="'skeleton-' + n"
+          cols="6"
+          md="3"
+          lg="2"
+      >
+        <v-skeleton-loader color="black" type="card" height="288px" />
+      </v-col>
+
+      <v-col
+          v-else
           v-for="anime in animeList"
           :key="anime.id"
           cols="6"
@@ -31,18 +43,18 @@ const props = defineProps({
             <div class="tw-mt-4 tw-font-bold tw-text-sm tw-leading-snug tw-truncate">
               {{ anime.title }}
             </div>
-            <div class="tw-flex tw-items-center tw-justify-between tw-text-xs tw-max-h-5">
+            <div class="tw-flex tw-items-center tw-text-xs tw-justify-between">
               <v-rating
-                  :model-value="anime.mean || 0"
+                  :model-value="anime.mean * 0.5 || 0"
                   color="amber"
                   density="compact"
-                  size="small"
+                  size="14"
                   half-increments
                   readonly
-                  class="tw-text-xs"
-              />
-              <span class="text-grey">
-                {{ anime.mean || '-' }} ({{ anime.num_scoring_users || 0 }})
+                  class="tw-m-0"
+                  />
+              <span class="tw-text-gray-400 tw-whitespace-nowrap">
+                {{ anime.mean || '-' }} ({{ anime.num_scoring_users?.toLocaleString() || 0 }})
               </span>
             </div>
           </div>

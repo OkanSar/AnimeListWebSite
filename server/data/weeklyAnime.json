@@ -1,0 +1,70 @@
+{
+  "currentWeek": "2025-09-22T18:39:01.463Z",
+  "afterWeek": "2025-09-29T18:39:01.463Z",
+  "animes": [
+    {
+      "id": 20931,
+      "title": "Oneechan ga Kita",
+      "main_picture": {
+        "medium": "https://cdn.myanimelist.net/images/anime/3/56415.jpg",
+        "large": "https://cdn.myanimelist.net/images/anime/3/56415l.jpg"
+      },
+      "start_date": "2014-01-09",
+      "end_date": "2014-03-27",
+      "synopsis": "The story revolves around Tomoya Mizuhara, a 13-year-old boy who suddenly gains a big sister when his father remarries. 17-year-old Ichika is a little strange, and her affection for Tomoya is rather overwhelming, if not scary. On top of things, Ichika's friend Ruri is the ultimate sadist. Then there is Ichika's big-breasted quarter-Japanese friend Marina.\n\n(Source: ANN)",
+      "mean": 6.32,
+      "rank": 8358,
+      "popularity": 1948,
+      "num_list_users": 126980,
+      "num_scoring_users": 64280,
+      "genres": [
+        {
+          "id": 4,
+          "name": "Comedy"
+        },
+        {
+          "id": 36,
+          "name": "Slice of Life"
+        }
+      ],
+      "num_episodes": 12,
+      "rating": "pg_13"
+    },
+    {
+      "id": 31490,
+      "title": "One Piece Film: Gold",
+      "main_picture": {
+        "medium": "https://cdn.myanimelist.net/images/anime/1081/137690.jpg",
+        "large": "https://cdn.myanimelist.net/images/anime/1081/137690l.jpg"
+      },
+      "start_date": "2016-07-23",
+      "end_date": "2016-07-23",
+      "synopsis": "Monkey D. Luffy and his Straw Hat Crew have finally arrived on Gran Tesoro, a ship carrying the largest entertainment city in the world. Drawn in by the chances of hitting the jackpot, the crew immediately head to the casino. There, they quickly find themselves on a winning streak, playing with what seems to be endless luck.\n\nWhen offered a special gamble by Gild Tesoro—the master of the city himself—the crew agrees, choosing to believe in their captain's luck. However, when they find themselves victims of a despicable scam, the crew quickly realize that there is something darker happening beneath the city's surface.\n\nLeft penniless and beaten down, the Straw Hat Crew are forced to rely on another gamble of a plan. With the help of a new friend or two, the group must work to reclaim what they've lost before time, and what remains of their luck, runs out.\n\n[Written by MAL Rewrite]",
+      "mean": 7.87,
+      "rank": 928,
+      "popularity": 1111,
+      "num_list_users": 242859,
+      "num_scoring_users": 145259,
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 2,
+          "name": "Adventure"
+        },
+        {
+          "id": 10,
+          "name": "Fantasy"
+        },
+        {
+          "id": 27,
+          "name": "Shounen"
+        }
+      ],
+      "num_episodes": 1,
+      "rating": "pg_13"
+    }
+  ]
+}

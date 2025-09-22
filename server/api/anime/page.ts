@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const clientId = config.malClientId
 
     const page = Number(query.page || 1)
-    const search = String(query.q || "Naruto")
+    const search = String(query.q || "Solo")
     const limit = 50
     const offset = (page - 1) * limit
 

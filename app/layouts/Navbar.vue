@@ -11,7 +11,7 @@
         <template v-if="!user">
           <v-btn text @click="login">Giriş Yap</v-btn>
           <v-btn text @click="register">Kayıt Ol</v-btn>
-          <v-btn @click="theme.toggle()" text="Dark Mod"><v-icon :icon="mdiMenu"/></v-btn>
+          <v-btn @click="theme.toggle()" text="Cycle All Themes"><v-icon :icon="mdiMenu"/></v-btn>
         </template>
 
         <template v-else>
@@ -104,10 +104,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useDisplay } from 'vuetify'
-import { useTheme } from 'vuetify'
 import {mdiMenu, mdiThemeLightDark} from '@mdi/js';
 
-const theme = useTheme()
+const props = defineProps({
+  theme: null
+})
+
 const { xs } = useDisplay()
 
 const userMenu = ref(false)

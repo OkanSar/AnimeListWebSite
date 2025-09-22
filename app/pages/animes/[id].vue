@@ -8,33 +8,10 @@ const seasons = ref<any[]>([])
 const activeSeason = ref(0)
 const pending = ref(false)
 const error = ref<string | null>(null)
-const toSlug = (title: string) => {
-  return title
-      .normalize("NFD")                     // Unicode normalize
-      .replace(/[\u0300-\u036f]/g, "")     // aksanları kaldır
-      .replace(/[^a-zA-Z0-9\s]/g, "")      // özel karakterleri kaldır
-      .trim()
-      .replace(/\s+/g, "-")                // boşlukları -
-      .toLowerCase()
-}
 const anizleUrl = computed(() => {
-  const slug = toSlug(anime.value.title)
-  return `https://anizle.com/${slug}-izle`
+  if (!anime.value?.title) return "#"
+  return `/api/anime/redirect?q=${encodeURIComponent(anime.value.title + " izle")}`
 })
-const getSeasonNameFromTitle = (title: string, index: number, baseTitle?: string) => {
-  if (!title) return `${index + 1}. Sezon`
-  const m = title.match(/Season\s*(\d+)/i) || title.match(/\bS(?:eason)?\s?(\d+)\b/i)
-  if (m) return `Sezon ${m[1]}`
-  // eğer başlık baseTitle içeriyorsa, suffixi alalım
-  if (baseTitle && title.toLowerCase().includes(baseTitle.toLowerCase())) {
-    const suffix = title.slice(baseTitle.length).trim()
-    if (suffix) return suffix
-  }
-  // fallback: direkt başlıktan çıkarabileceğimiz parça:
-  const after = title.replace(/:/g, " - ").split("-").slice(1).join("-").trim()
-  if (after) return after
-  return `${index + 1}. Sezon`
-}
 
 const loadAnime = async () => {
   pending.value = true
@@ -95,8 +72,8 @@ watch(() => route.params.id, () => loadAnime())
             <v-col cols="12" md="6" class="tw-flex tw-flex-col tw-gap-6 md:tw-ml-10 tw-px-3 md:tw-px-0">
 
               <div v-if="pending">
-                <v-skeleton-loader type="heading, paragraph" class="tw-h-10 tw-mb-4"/>
-                <v-skeleton-loader type="paragraph, paragraph" class="tw-h-5 tw-mb-2"/>
+                <v-skeleton-loader color="black" type="heading, paragraph" class="tw-h-10 tw-mb-4"/>
+                <v-skeleton-loader color="black" type="paragraph, paragraph" class="tw-h-5 tw-mb-2"/>
               </div>
 
               <div v-else-if="anime">
@@ -132,7 +109,7 @@ watch(() => route.params.id, () => loadAnime())
                     <v-icon start>mdi-play</v-icon>
                     İzle
                   </v-btn>
-                  <v-btn :to="anizleUrl" variant="tonal" color="orange" class="tw-text-white">
+                  <v-btn :href="anizleUrl" variant="tonal" color="orange" class="tw-text-white">
                     <v-icon start>mdi-play</v-icon>
                     Fragmanı İzle
                   </v-btn>
@@ -148,7 +125,7 @@ watch(() => route.params.id, () => loadAnime())
               <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-items-center tw-gap-6">
 
                 <div v-if="pending">
-                  <v-skeleton-loader type="image" class="tw-w-48 tw-h-64"/>
+                  <v-skeleton-loader color="black" type="image" class="tw-w-48 tw-h-64"/>
                 </div>
                 <div v-else-if="anime" class="tw-min-w-60 md:tw-min-w-80">
                   <v-img
@@ -197,7 +174,7 @@ watch(() => route.params.id, () => loadAnime())
             </v-col>
           </v-row>
 
-          <o-category-chip v-if="!pending && anime" :categories="anime.genres || []" />
+          <o-category-chip v-if="!pending && anime" :categories="anime.genres || []" :pending="pending" />
 
           <!-- Sezon Sekmeleri -->
           <v-tabs v-if="!pending && seasons.length" v-model="activeSeason" background-color="transparent" class="tw-mt-6 tw-text-white">

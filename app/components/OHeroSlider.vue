@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
-
 interface Slide {
   img: string
   title: string
@@ -8,33 +6,37 @@ interface Slide {
 }
 
 const props = defineProps<{
-  slides: Slide[]
+  slides: Slide[],
+  pending: boolean
 }>()
 </script>
 
 <template>
-  <v-carousel
-      class="full-screen-carousel tw-min-h-[700px]"
-      height="700"
-      show-arrows="hover"
-      cycle
-      hide-delimiter-background
-  >
-    <v-carousel-item
-        v-for="(slide, i) in props.slides"
-        :key="i"
+  <v-skeleton-loader v-if="props.pending" color="black" type="paragraph" class="carousel-sheet" />
+
+    <v-carousel
+        v-else
+        class="full-screen-carousel tw-min-h-[700px]"
+        height="700"
+        show-arrows="hover"
+        cycle
+        hide-delimiter-background
     >
-      <v-sheet
-          class="carousel-sheet"
-          :style="{ backgroundImage: `url(${slide.img})` }"
+      <v-carousel-item
+          v-for="(slide, i) in props.slides"
+          :key="i"
       >
-        <div class="overlay-text">
-          <div class="title">{{ slide.title }}</div>
-          <div class="description">{{ slide.description }}</div>
-        </div>
-      </v-sheet>
-    </v-carousel-item>
-  </v-carousel>
+        <v-sheet
+            class="carousel-sheet"
+            :style="{ backgroundImage: `url(${slide.img})` }"
+        >
+          <div class="overlay-text">
+            <div class="title">{{ slide.title }}</div>
+            <div class="description">{{ slide.description }}</div>
+          </div>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
 </template>
 
 <style scoped>
