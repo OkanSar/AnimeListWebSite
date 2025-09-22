@@ -36,7 +36,7 @@ const props = defineProps<{
       <v-col cols="12" md="6" class="tw-flex tw-flex-col tw-justify-center tw-m-auto">
         <v-card-title class="suggestionTitle tw-mb-3"> {{ sug.title }} </v-card-title>
         <v-card-text class="suggestionDescription mb-10">
-         {{ sug.synopsis?.slice(0, 200) }}{{ sug.synopsis?.length > 200 ? "..." : "" }}
+          {{ sug.synopsis.length > 200 ? sug.synopsis.slice(0, 200) + "..." : sug.synopsis }}
         </v-card-text>
         <v-row class="tw-gap-y-2 tw-gap-x-2" align="stretch" no-gutters>
           <v-col cols="12" lg="6">
