@@ -7,7 +7,6 @@ export default defineEventHandler(async (event) => {
     const offset = (page - 1) * limit
 
     try {
-        // MAL API ranking_type=all
         const url = `https://api.myanimelist.net/v2/anime/ranking?ranking_type=all&limit=${limit}&offset=${offset}&fields=id,title,mean,num_episodes,genres,num_scoring_users`
         const response: any = await $fetch(url, {
             headers: { "X-MAL-CLIENT-ID": clientId }
