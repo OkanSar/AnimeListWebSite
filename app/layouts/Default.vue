@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-layout>
-      <Navbar :theme="theme" />
+      <Navbar />
       <v-main class="tw-bg-black tw-min-h-screen tw-text-white tw-mt-[-64px]">
         <slot />
       </v-main>
@@ -14,4 +14,5 @@
 import { useTheme } from "vuetify";
 import Navbar from '~/layouts/Navbar.vue'
 const theme = useTheme();
+theme.change('dark')
 </script>

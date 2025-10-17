@@ -20,9 +20,27 @@ export default defineEventHandler(async (event) => {
         const response = await $fetch(url, {
             headers: { "X-MAL-CLIENT-ID": clientId }
         })
+        let episodeScore = []
+
+        try {
+            const episodeRes = await Promise.race([
+                $fetch(`https://api.jikan.moe/v4/anime/${id}/episodes`),
+                new Promise((_, reject) => setTimeout(() => reject(new Error("Jikan timeout")), 5000))
+            ])
+            episodeScore = (episodeRes.data || []).map((ep: any) => ({
+                ...ep,
+                score: ep.score ?? response.mean ?? null
+            }))
+        } catch (err) {
+            console.warn("⚠️ Jikan API erişilemedi, boş episodeScore döndürülüyor:", err)
+            episodeScore = []
+        }
 
         if (!response) throw createError({ statusCode: 404, statusMessage: "Anime bulunamadı" })
-        return response
+        return {
+            ...response,
+            episodeScore: episodeScore
+        }
     } catch (err: any) {
         console.error("MAL API ERROR:", err)
         throw createError({ statusCode: err?.statusCode || 500, statusMessage: err?.statusMessage || "Anime alınamadı" })

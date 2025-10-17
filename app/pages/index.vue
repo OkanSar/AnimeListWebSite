@@ -8,6 +8,7 @@ import OSuggestionAnimes from "~/components/OSuggestionAnimes.vue";
 
 const poppulerAnimes = ref<any[]>([])
 const suggestedAnimes = ref([])
+const upcomingAnimes = ref([])
 const pending = ref(true)
 const slides = [
   {
@@ -41,8 +42,10 @@ const loadPage = async () => {
   try {
     const res = await $fetch('/api/anime/ranking')
     const sug = await $fetch('/api/anime/suggested')
+    const upc = await $fetch('/api/anime/upcoming')
     poppulerAnimes.value = res.data || []
     suggestedAnimes.value = sug.data || []
+    upcomingAnimes.value = upc || []
   } catch (err) {
     console.error('Ranking API error:', err)
   } finally {
@@ -59,6 +62,6 @@ onMounted(() => {
   <o-most-populer-animes :anime="poppulerAnimes" :pending="pending" />
   <o-new-upcoming-animes />
   <o-suggestion-animes :suggest="suggestedAnimes" :pending="pending" />
-  <o-more-upcoming-animes />
+  <o-more-upcoming-animes :upcoming="upcomingAnimes" :pending="pending" />
 </template>
 

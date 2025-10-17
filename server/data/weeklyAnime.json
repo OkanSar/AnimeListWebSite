@@ -1,74 +1,97 @@
 {
-  "currentWeek": "2025-09-22T19:06:29.849Z",
-  "afterWeek": "2025-09-29T19:06:29.849Z",
-  "currentLetter": "ac",
+  "currentWeek": "2025-10-17T14:58:36.082Z",
+  "afterWeek": "2025-10-24T14:58:36.082Z",
   "animes": [
     {
-      "id": 43608,
-      "title": "Kaguya-sama wa Kokurasetai: Ultra Romantic",
+      "id": 1,
+      "title": "Cowboy Bebop",
       "main_picture": {
-        "medium": "https://cdn.myanimelist.net/images/anime/1160/122627.webp",
-        "large": "https://cdn.myanimelist.net/images/anime/1160/122627l.webp"
+        "medium": "https://cdn.myanimelist.net/images/anime/4/19644.jpg",
+        "large": "https://cdn.myanimelist.net/images/anime/4/19644l.jpg"
       },
-      "start_date": "2022-04-09",
-      "end_date": "2022-06-25",
-      "synopsis": "The elite members of Shuchiin Academy's student council continue their competitive day-to-day antics. Council president Miyuki Shirogane clashes daily against vice-president Kaguya Shinomiya, each fighting tooth and nail to trick the other into confessing their romantic love. Kaguya struggles within the strict confines of her wealthy, uptight family, rebelling against her cold default demeanor as she warms to Shirogane and the rest of her friends.\n\nMeanwhile, council treasurer Yuu Ishigami suffers under the weight of his hopeless crush on Tsubame Koyasu, a popular upperclassman who helps to instill a new confidence in him. Miko Iino, the newest student council member, grows closer to the rule-breaking Ishigami while striving to overcome her own authoritarian moral code.\n\nAs love further blooms at Shuchiin Academy, the student council officers drag their outsider friends into increasingly comedic conflicts.\n\n[Written by MAL Rewrite]\n",
-      "mean": 8.97,
-      "rank": 14,
-      "popularity": 166,
-      "num_list_users": 1057452,
-      "num_scoring_users": 601314,
+      "start_date": "1998-04-03",
+      "end_date": "1999-04-24",
+      "synopsis": "Crime is timeless. By the year 2071, humanity has expanded across the galaxy, filling the surface of other planets with settlements like those on Earth. These new societies are plagued by murder, drug use, and theft, and intergalactic outlaws are hunted by a growing number of tough bounty hunters.\n\nSpike Spiegel and Jet Black pursue criminals throughout space to make a humble living. Beneath his goofy and aloof demeanor, Spike is haunted by the weight of his violent past. Meanwhile, Jet manages his own troubled memories while taking care of Spike and the Bebop, their ship. The duo is joined by the beautiful con artist Faye Valentine, odd child Edward Wong Hau Pepelu Tivrusky IV, and Ein, a bioengineered Welsh corgi.\n\nWhile developing bonds and working to catch a colorful cast of criminals, the Bebop crew's lives are disrupted by a menace from Spike's past. As a rival's maniacal plot continues to unravel, Spike must choose between life with his newfound family or revenge for his old wounds.\n\n[Written by MAL Rewrite]",
+      "mean": 8.75,
+      "rank": 47,
+      "popularity": 42,
+      "num_list_users": 2004301,
+      "num_scoring_users": 1034759,
       "genres": [
         {
-          "id": 4,
-          "name": "Comedy"
+          "id": 1,
+          "name": "Action"
         },
         {
-          "id": 22,
-          "name": "Romance"
+          "id": 50,
+          "name": "Adult Cast"
         },
-        {
-          "id": 23,
-          "name": "School"
-        },
-        {
-          "id": 42,
-          "name": "Seinen"
-        }
-      ],
-      "num_episodes": 13,
-      "rating": "pg_13"
-    },
-    {
-      "id": 28851,
-      "title": "Koe no Katachi",
-      "main_picture": {
-        "medium": "https://cdn.myanimelist.net/images/anime/1122/96435.jpg",
-        "large": "https://cdn.myanimelist.net/images/anime/1122/96435l.jpg"
-      },
-      "start_date": "2016-09-17",
-      "end_date": "2016-09-17",
-      "synopsis": "As a wild youth, elementary school student Shouya Ishida sought to beat boredom in the cruelest ways. When the deaf Shouko Nishimiya transfers into his class, Shouya and the rest of his class thoughtlessly bully her for fun. However, when her mother notifies the school, he is singled out and blamed for everything done to her. With Shouko transferring out of the school, Shouya is left at the mercy of his classmates. He is heartlessly ostracized all throughout elementary and middle school, while teachers turn a blind eye.\n\nNow in his third year of high school, Shouya is still plagued by his wrongdoings as a young boy. Sincerely regretting his past actions, he sets out on a journey of redemption: to meet Shouko once more and make amends.\n\nKoe no Katachi tells the heartwarming tale of Shouya's reunion with Shouko and his honest attempts to redeem himself, all while being continually haunted by the shadows of his past.\n \n[Written by MAL Rewrite]",
-      "mean": 8.93,
-      "rank": 18,
-      "popularity": 19,
-      "num_list_users": 2523809,
-      "num_scoring_users": 1737875,
-      "genres": [
         {
           "id": 46,
           "name": "Award Winning"
         },
         {
-          "id": 8,
-          "name": "Drama"
+          "id": 24,
+          "name": "Sci-Fi"
+        },
+        {
+          "id": 29,
+          "name": "Space"
+        }
+      ],
+      "num_episodes": 26,
+      "rating": "r"
+    },
+    {
+      "id": 9969,
+      "title": "Gintama'",
+      "main_picture": {
+        "medium": "https://cdn.myanimelist.net/images/anime/4/50361.webp",
+        "large": "https://cdn.myanimelist.net/images/anime/4/50361l.webp"
+      },
+      "start_date": "2011-04-04",
+      "end_date": "2012-03-26",
+      "synopsis": "After a one-year hiatus, Shinpachi Shimura returns to Edo, only to stumble upon a shocking surprise: Gintoki and Kagura, his fellow Yorozuya members, have become completely different characters! Fleeing from the Yorozuya headquarters in confusion, Shinpachi finds that all the denizens of Edo have undergone impossibly extreme changes, in both appearance and personality. Most unbelievably, his sister Otae has married the Shinsengumi chief and shameless stalker Isao Kondou and is pregnant with their first child.\n\nBewildered, Shinpachi agrees to join the Shinsengumi at Otae and Kondou's request and finds even more startling transformations afoot both in and out of the ranks of the the organization. However, discovering that Vice Chief Toushirou Hijikata has remained unchanged, Shinpachi and his unlikely Shinsengumi ally set out to return the city of Edo to how they remember it.\n\nWith even more dirty jokes, tongue-in-cheek parodies, and shameless references, Gintama' follows the Yorozuya team through more of their misadventures in the vibrant, alien-filled world of Edo.\n\n[Written by MAL Rewrite]",
+      "mean": 9.02,
+      "rank": 11,
+      "popularity": 405,
+      "num_list_users": 599314,
+      "num_scoring_users": 252230,
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
+        },
+        {
+          "id": 4,
+          "name": "Comedy"
+        },
+        {
+          "id": 57,
+          "name": "Gag Humor"
+        },
+        {
+          "id": 13,
+          "name": "Historical"
+        },
+        {
+          "id": 20,
+          "name": "Parody"
+        },
+        {
+          "id": 21,
+          "name": "Samurai"
+        },
+        {
+          "id": 24,
+          "name": "Sci-Fi"
         },
         {
           "id": 27,
           "name": "Shounen"
         }
       ],
-      "num_episodes": 1,
+      "num_episodes": 51,
       "rating": "pg_13"
     }
   ]

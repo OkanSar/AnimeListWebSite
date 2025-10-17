@@ -1,5 +1,24 @@
 <script setup lang="ts">
+const props = defineProps<{
+  upcoming : {
+    id: number
+    title: string
+    description: string
+    medium_image: string
+    trailer: string
+    aired_from: string
+  }[]
+}>()
 
+const formatDate = (dateString: string) => {
+  if (!dateString) return 'Kesin Değil'
+  const date = new Date(dateString)
+  return date.toLocaleDateString('tr-TR', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
 </script>
 
 <template>
@@ -12,52 +31,57 @@
       align="start"
   >
     <v-slide-group-item
-        v-for="(anime, index) in 15"
+        v-for="(anime, index) in upcoming"
         :key="index"
     >
       <v-card
-          class="tw-mt-10 tw-mb-6 tw-ml-6 tw-max-w-[300px] xl:tw-max-w-[1200px] tw-m-auto"
+          class="tw-mt-10 tw-mb-6 tw-mx-auto tw-w-[233px] md:tw-w-[700px] tw-mr-4 tw-ml-6"
           color="black"
       >
-        <v-row no-gutters>
+        <v-row no-gutters class="tw-h-full tw-flex-wrap">
           <v-col cols="12" md="5">
             <v-img
-                src="~/assets/images/the-fragant-flower-blooms.jpg"
-                height="100%"
+                :src="anime.medium_image"
+                class="tw-w-full"
+                height="216px"
                 cover
             />
           </v-col>
 
-          <v-col cols="12" md="7" class="tw-flex tw-flex-col tw-justify-center tw-p-4">
-            <v-card-title class="suggestionTitle tw-mb-2">
-              The Fragrant Flower Blooms with Dignity
-            </v-card-title>
-            <v-card-subtitle>
-              2. Sezon - 16 Bölüm
-            </v-card-subtitle>
-            <v-card-text class="suggestionDescription tw-mb-4">
-              Chidori Lisesi, toplumun en düşük notlara sahip kesimini kabul eden bir erkek okuludur...
-            </v-card-text>
+          <v-col cols="12" md="7" class="tw-flex tw-flex-col tw-justify-between tw-p-4">
+            <div style="overflow: hidden; max-height: 180px;">
+              <v-card-title class="suggestionTitle tw-mb-2">
+                {{ anime.title }}
+              </v-card-title>
+              <v-card-subtitle>
+                Çıkış Tarihi: {{ formatDate(anime.aired_from) }}
+              </v-card-subtitle>
+              <v-card-text class="suggestionDescription tw-mb-4 tw-h-[100px]">
+                {{ anime.description?.length > 50 ? anime.description.slice(0, 100) + '...' : anime.description }}
+              </v-card-text>
+            </div>
+
             <v-row>
-              <v-col cols="12" md="12" lg="6">
-                <v-btn block class="tw-h-full xl:tw-ml-5 sm:tw-ml-0" color="orange">
+              <v-col cols="12" md="5">
+                <v-btn :to="{ path: '/animes/upcoming/',query: { trailerId: anime.id }}" block class="tw-h-full md:tw-ml-4" color="orange">
                   <v-icon class="tw-mr-2">mdi-play</v-icon>
-                  HAKKINDA
+                  FRAGMANI İZLE
                 </v-btn>
               </v-col>
-              <v-col cols="12" md="12" lg="6">
+              <v-col cols="12" md="6">
                 <v-btn variant="outlined" block class="tw-h-full tw-text-white" color="orange">
                   <v-icon class="tw-mr-2">mdi-bookmark</v-icon>
                   LİSTEME EKLE
                 </v-btn>
               </v-col>
             </v-row>
-        </v-col>
+          </v-col>
         </v-row>
       </v-card>
     </v-slide-group-item>
   </v-slide-group>
 </template>
+
 <style scoped>
 .suggestionTitle{
   font-size: 1.9rem;

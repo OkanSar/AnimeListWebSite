@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue"
-import { useRoute } from "vue-router"
-
 const route = useRoute()
 const anime = ref<any | null>(null)
+const episodeScore = ref([])
 const seasons = ref<any[]>([])
 const activeSeason = ref(0)
 const pending = ref(false)
@@ -23,22 +21,31 @@ const loadAnime = async () => {
     const id = route.params.id
     if (!id) throw new Error("Anime ID gerekli")
 
-    const res: any = await $fetch(`/api/anime/${id}`) // server { seasons: [...] }
-
+    const res: any = await $fetch(`/api/anime/${id}`)
     let fetchedSeasons = Array.isArray(res.seasons) ? res.seasons : [res]
 
+    // episodeScore'u al ve 10 üzerinden normalize et
+    const scores = (res.episodeScore || []).map((ep: any) => ({
+      ...ep,
+      score: ep.score ? ep.score * 2 : null // 5 → 10 scale
+    }))
+
     fetchedSeasons = fetchedSeasons.map((season, idx) => {
-      const numEps = season.num_episodes || 0
+      const numEps = season.num_episodes || scores.length || 0
       return {
         ...season,
         name: season.title || `Sezon ${idx + 1}`,
-        episodes: Array.from({ length: numEps }, (_, i) => ({
-          name: `Bölüm ${i + 1}`,
-          rating: season.mean || 0
-        }))
+        episodes: Array.from({ length: numEps }, (_, i) => {
+          const ep = scores[i] || null
+          return {
+            name: `Bölüm ${i + 1}`,
+            rating: ep?.score ?? season.mean ?? 0
+          }
+        })
       }
     })
 
+    episodeScore.value = scores
     seasons.value = fetchedSeasons
     anime.value = seasons.value[0] || null
 
@@ -48,6 +55,14 @@ const loadAnime = async () => {
   } finally {
     pending.value = false
   }
+}
+
+const getEpisodeColor = (rating: number) => {
+  if (rating >= 9) return "#02421e"
+  if (rating >= 8) return "#047537"
+  if (rating >= 7) return "#9b7806"
+  if (rating >= 6) return "#e0d067"
+  return "#8474fc"
 }
 
 onMounted(loadAnime)
@@ -68,9 +83,7 @@ watch(() => route.params.id, () => loadAnime())
 
           <v-row class="tw-items-start tw-justify-between tw-px-4 md:tw-px-0">
 
-            <!-- SOL TARAF -->
             <v-col cols="12" md="6" class="tw-flex tw-flex-col tw-gap-6 md:tw-ml-10 tw-px-3 md:tw-px-0">
-
               <div v-if="pending">
                 <v-skeleton-loader color="black" type="heading, paragraph" class="tw-h-10 tw-mb-4"/>
                 <v-skeleton-loader color="black" type="paragraph, paragraph" class="tw-h-5 tw-mb-2"/>
@@ -176,7 +189,6 @@ watch(() => route.params.id, () => loadAnime())
 
           <o-category-chip v-if="!pending && anime" :categories="anime.genres || []" :pending="pending" />
 
-          <!-- Sezon Sekmeleri -->
           <v-tabs v-if="!pending && seasons.length" v-model="activeSeason" background-color="transparent" class="tw-mt-6 tw-text-white">
             <v-tab v-for="(season, i) in seasons" :key="i" :value="i">
               {{ season.name }}
@@ -189,23 +201,20 @@ watch(() => route.params.id, () => loadAnime())
                 <v-chip
                     v-for="episode in season.episodes"
                     :key="episode.name"
-                    text-color="white"
-                    outlined
                     medium
+                    variant="flat"
+                    :color="getEpisodeColor(episode.rating)"
                     class="tw-px-4 tw-py-3 tw-text-lg tw-justify-center"
                     :style="{
-                    color: 'white',
-                    padding: '20px',
-                    minWidth: '100px'
-                  }"
-                >
+                      padding: '20px',
+                      minWidth: '120px'
+                    }">
                   {{ episode.name }}
                 </v-chip>
               </v-row>
             </v-tabs-window-item>
           </v-tabs-window>
 
-          <!-- Hata mesajı -->
           <div v-if="error" class="tw-text-red-500 tw-text-center tw-mt-4">
             {{ error }}
           </div>
