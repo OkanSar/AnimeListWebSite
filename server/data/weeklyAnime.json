@@ -1,97 +1,73 @@
 {
-  "currentWeek": "2025-10-17T14:58:36.082Z",
-  "afterWeek": "2025-10-24T14:58:36.082Z",
+  "currentWeek": "2025-11-05T19:26:32.322Z",
+  "afterWeek": "2025-11-12T19:26:32.322Z",
   "animes": [
     {
-      "id": 1,
-      "title": "Cowboy Bebop",
+      "id": 47917,
+      "title": "Bocchi the Rock!",
       "main_picture": {
-        "medium": "https://cdn.myanimelist.net/images/anime/4/19644.jpg",
-        "large": "https://cdn.myanimelist.net/images/anime/4/19644l.jpg"
+        "medium": "https://cdn.myanimelist.net/images/anime/1448/127956.jpg",
+        "large": "https://cdn.myanimelist.net/images/anime/1448/127956l.jpg"
       },
-      "start_date": "1998-04-03",
-      "end_date": "1999-04-24",
-      "synopsis": "Crime is timeless. By the year 2071, humanity has expanded across the galaxy, filling the surface of other planets with settlements like those on Earth. These new societies are plagued by murder, drug use, and theft, and intergalactic outlaws are hunted by a growing number of tough bounty hunters.\n\nSpike Spiegel and Jet Black pursue criminals throughout space to make a humble living. Beneath his goofy and aloof demeanor, Spike is haunted by the weight of his violent past. Meanwhile, Jet manages his own troubled memories while taking care of Spike and the Bebop, their ship. The duo is joined by the beautiful con artist Faye Valentine, odd child Edward Wong Hau Pepelu Tivrusky IV, and Ein, a bioengineered Welsh corgi.\n\nWhile developing bonds and working to catch a colorful cast of criminals, the Bebop crew's lives are disrupted by a menace from Spike's past. As a rival's maniacal plot continues to unravel, Spike must choose between life with his newfound family or revenge for his old wounds.\n\n[Written by MAL Rewrite]",
-      "mean": 8.75,
-      "rank": 47,
-      "popularity": 42,
-      "num_list_users": 2004301,
-      "num_scoring_users": 1034759,
+      "start_date": "2022-10-09",
+      "end_date": "2022-12-25",
+      "synopsis": "Yearning to make friends and perform live with a band, lonely and socially anxious Hitori \"Bocchi\" Gotou devotes her time to playing the guitar. On a fateful day, Bocchi meets the outgoing drummer Nijika Ijichi, who invites her to join Kessoku Band when their guitarist, Ikuyo Kita, flees before their first show. Soon after, Bocchi meets her final bandmate—the cool bassist Ryou Yamada. \n\nAlthough their first performance together is subpar, the girls feel empowered by their shared love for music, and they are soon rejoined by Kita. Finding happiness in performing, Bocchi and her bandmates put their hearts into improving as musicians while making the most of their fleeting high school days.\n\n[Written by MAL Rewrite]",
+      "mean": 8.74,
+      "rank": 49,
+      "popularity": 301,
+      "num_list_users": 739183,
+      "num_scoring_users": 445871,
       "genres": [
         {
-          "id": 1,
-          "name": "Action"
-        },
-        {
-          "id": 50,
-          "name": "Adult Cast"
-        },
-        {
-          "id": 46,
-          "name": "Award Winning"
-        },
-        {
-          "id": 24,
-          "name": "Sci-Fi"
-        },
-        {
-          "id": 29,
-          "name": "Space"
-        }
-      ],
-      "num_episodes": 26,
-      "rating": "r"
-    },
-    {
-      "id": 9969,
-      "title": "Gintama'",
-      "main_picture": {
-        "medium": "https://cdn.myanimelist.net/images/anime/4/50361.webp",
-        "large": "https://cdn.myanimelist.net/images/anime/4/50361l.webp"
-      },
-      "start_date": "2011-04-04",
-      "end_date": "2012-03-26",
-      "synopsis": "After a one-year hiatus, Shinpachi Shimura returns to Edo, only to stumble upon a shocking surprise: Gintoki and Kagura, his fellow Yorozuya members, have become completely different characters! Fleeing from the Yorozuya headquarters in confusion, Shinpachi finds that all the denizens of Edo have undergone impossibly extreme changes, in both appearance and personality. Most unbelievably, his sister Otae has married the Shinsengumi chief and shameless stalker Isao Kondou and is pregnant with their first child.\n\nBewildered, Shinpachi agrees to join the Shinsengumi at Otae and Kondou's request and finds even more startling transformations afoot both in and out of the ranks of the the organization. However, discovering that Vice Chief Toushirou Hijikata has remained unchanged, Shinpachi and his unlikely Shinsengumi ally set out to return the city of Edo to how they remember it.\n\nWith even more dirty jokes, tongue-in-cheek parodies, and shameless references, Gintama' follows the Yorozuya team through more of their misadventures in the vibrant, alien-filled world of Edo.\n\n[Written by MAL Rewrite]",
-      "mean": 9.02,
-      "rank": 11,
-      "popularity": 405,
-      "num_list_users": 599314,
-      "num_scoring_users": 252230,
-      "genres": [
-        {
-          "id": 1,
-          "name": "Action"
+          "id": 52,
+          "name": "CGDCT"
         },
         {
           "id": 4,
           "name": "Comedy"
         },
         {
-          "id": 57,
-          "name": "Gag Humor"
+          "id": 19,
+          "name": "Music"
+        }
+      ],
+      "num_episodes": 12,
+      "rating": "pg_13"
+    },
+    {
+      "id": 11061,
+      "title": "Hunter x Hunter (2011)",
+      "main_picture": {
+        "medium": "https://cdn.myanimelist.net/images/anime/1337/99013.jpg",
+        "large": "https://cdn.myanimelist.net/images/anime/1337/99013l.jpg"
+      },
+      "start_date": "2011-10-02",
+      "end_date": "2014-09-24",
+      "synopsis": "Hunters devote themselves to accomplishing hazardous tasks, all from traversing the world's uncharted territories to locating rare items and monsters. Before becoming a Hunter, one must pass the Hunter Examination—a high-risk selection process in which most applicants end up handicapped or worse, deceased.\n\nAmbitious participants who challenge the notorious exam carry their own reason. What drives 12-year-old Gon Freecss is finding Ging, his father and a Hunter himself. Believing that he will meet his father by becoming a Hunter, Gon takes the first step to walk the same path.\n\nDuring the Hunter Examination, Gon befriends the medical student Leorio Paladiknight, the vindictive Kurapika, and ex-assassin Killua Zoldyck. While their motives vastly differ from each other, they band together for a common goal and begin to venture into a perilous world.\n\n[Written by MAL Rewrite]",
+      "mean": 9.03,
+      "rank": 8,
+      "popularity": 8,
+      "num_list_users": 3096146,
+      "num_scoring_users": 1921785,
+      "genres": [
+        {
+          "id": 1,
+          "name": "Action"
         },
         {
-          "id": 13,
-          "name": "Historical"
+          "id": 2,
+          "name": "Adventure"
         },
         {
-          "id": 20,
-          "name": "Parody"
-        },
-        {
-          "id": 21,
-          "name": "Samurai"
-        },
-        {
-          "id": 24,
-          "name": "Sci-Fi"
+          "id": 10,
+          "name": "Fantasy"
         },
         {
           "id": 27,
           "name": "Shounen"
         }
       ],
-      "num_episodes": 51,
+      "num_episodes": 148,
       "rating": "pg_13"
     }
   ]

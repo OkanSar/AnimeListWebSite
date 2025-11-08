@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { ref, onMounted } from "vue"
+
 const props = defineProps<{
-  upcoming : {
+  upcoming: {
     id: number
     title: string
     description: string
@@ -10,14 +12,61 @@ const props = defineProps<{
   }[]
 }>()
 
+// ✅ Listeye eklenen animelerin ID'lerini tutan set
+const addedAnimeIds = ref<Set<number>>(new Set())
+
+// ✅ Alert durumu
+const showAlert = ref(false)
+const alertMessage = ref("")
+
+// ✅ Tarih formatlama
 const formatDate = (dateString: string) => {
-  if (!dateString) return 'Kesin Değil'
+  if (!dateString) return "Kesin Değil"
   const date = new Date(dateString)
-  return date.toLocaleDateString('tr-TR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
+  return date.toLocaleDateString("tr-TR", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
   })
+}
+
+// ✅ Kullanıcı listesi yükleme (örnek API)
+const loadUserAnimeList = async () => {
+  try {
+    const userAnimeList: any = await $fetch("/api/supabase/user_anime_list")
+    if (userAnimeList?.all && Array.isArray(userAnimeList.all)) {
+      addedAnimeIds.value = new Set(userAnimeList.all.map((a: any) => a.id))
+    }
+  } catch (err) {
+    console.error("Kullanıcı anime listesi alınamadı:", err)
+  }
+}
+
+onMounted(() => loadUserAnimeList())
+
+// ✅ Listeye ekleme / çıkarma toggle fonksiyonu
+const toggleAnimeInList = async (anime: any) => {
+  const isInList = addedAnimeIds.value.has(anime.id)
+
+  try {
+    await $fetch("/api/supabase/user_anime_list", {
+      method: "PUT",
+      body: { animeId: anime.id }
+    })
+
+    if (isInList) {
+      addedAnimeIds.value.delete(anime.id)
+      alertMessage.value = `${anime.title} listenden çıkarıldı!`
+    } else {
+      addedAnimeIds.value.add(anime.id)
+      alertMessage.value = `${anime.title} listeye eklendi!`
+    }
+
+    showAlert.value = true
+    setTimeout(() => (showAlert.value = false), 2500)
+  } catch (err) {
+    console.error("Liste güncelleme hatası:", err)
+  }
 }
 </script>
 
@@ -25,6 +74,7 @@ const formatDate = (dateString: string) => {
   <h2 class="text-orange tw-font-bold tw-mt-20 tw-text-center md:tw-text-left tw-px-6 md:tw-pl-24 md:tw-pr-0">
     Devamı Gelecek Animeler
   </h2>
+
   <v-slide-group
       class="full-width no-scrollbar"
       :show-arrows="$vuetify.display.mdAndUp"
@@ -57,21 +107,37 @@ const formatDate = (dateString: string) => {
                 Çıkış Tarihi: {{ formatDate(anime.aired_from) }}
               </v-card-subtitle>
               <v-card-text class="suggestionDescription tw-mb-4 tw-h-[100px]">
-                {{ anime.description?.length > 50 ? anime.description.slice(0, 100) + '...' : anime.description }}
+                {{ anime.description?.length > 100
+                  ? anime.description.slice(0, 100) + "..."
+                  : anime.description }}
               </v-card-text>
             </div>
 
             <v-row>
               <v-col cols="12" md="5">
-                <v-btn :to="{ path: '/animes/upcoming/',query: { trailerId: anime.id }}" block class="tw-h-full md:tw-ml-4" color="orange">
+                <v-btn
+                    :to="{ path: '/animes/upcoming/', query: { trailerId: anime.id } }"
+                    block
+                    class="tw-h-full md:tw-ml-4"
+                    color="orange"
+                >
                   <v-icon class="tw-mr-2">mdi-play</v-icon>
                   FRAGMANI İZLE
                 </v-btn>
               </v-col>
+
               <v-col cols="12" md="6">
-                <v-btn variant="outlined" block class="tw-h-full tw-text-white" color="orange">
-                  <v-icon class="tw-mr-2">mdi-bookmark</v-icon>
-                  LİSTEME EKLE
+                <v-btn
+                    block
+                    color="orange"
+                    :variant="addedAnimeIds.has(anime.id) ? 'flat' : 'outlined'"
+                    class="tw-h-full tw-text-white"
+                    @click.stop.prevent="toggleAnimeInList(anime)"
+                >
+                  <v-icon class="tw-mr-2">
+                    {{ addedAnimeIds.has(anime.id) ? 'mdi-check' : 'mdi-bookmark' }}
+                  </v-icon>
+                  {{ addedAnimeIds.has(anime.id) ? 'Listeye Eklendi' : 'Listeme Ekle' }}
                 </v-btn>
               </v-col>
             </v-row>
@@ -80,23 +146,31 @@ const formatDate = (dateString: string) => {
       </v-card>
     </v-slide-group-item>
   </v-slide-group>
+
+  <!-- ✅ Sağ alt alert -->
+  <v-alert
+      v-if="showAlert"
+      type="success"
+      variant="flat"
+      style="position: fixed; bottom: 16px; right: 16px; z-index: 9999;"
+  >
+    {{ alertMessage }}
+  </v-alert>
 </template>
 
 <style scoped>
-.suggestionTitle{
+.suggestionTitle {
   font-size: 1.9rem;
 }
-.suggestionDescription{
+.suggestionDescription {
   font-size: 0.8rem;
 }
 @media (max-width: 768px) {
   .suggestionTitle {
     font-size: 1.4rem;
   }
-
   .suggestionDescription {
     font-size: 0.7rem;
   }
 }
 </style>
-

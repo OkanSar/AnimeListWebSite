@@ -1,11 +1,19 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, watch } from "vue"
 const route = useRoute()
+
 const anime = ref<any | null>(null)
 const episodeScore = ref([])
 const seasons = ref<any[]>([])
 const activeSeason = ref(0)
 const pending = ref(false)
 const error = ref<string | null>(null)
+
+// ✅ Liste durumu
+const addedAnimeIds = ref<Set<number>>(new Set())
+const showAlert = ref(false)
+const alertMessage = ref("")
+
 const anizleUrl = computed(() => {
   if (!anime.value?.title) return "#"
   return `/api/anime/redirect?q=${encodeURIComponent(anime.value.title + " izle")}`
@@ -24,10 +32,10 @@ const loadAnime = async () => {
     const res: any = await $fetch(`/api/anime/${id}`)
     let fetchedSeasons = Array.isArray(res.seasons) ? res.seasons : [res]
 
-    // episodeScore'u al ve 10 üzerinden normalize et
+    // episodeScore'u normalize et
     const scores = (res.episodeScore || []).map((ep: any) => ({
       ...ep,
-      score: ep.score ? ep.score * 2 : null // 5 → 10 scale
+      score: ep.score ? ep.score * 2 : null
     }))
 
     fetchedSeasons = fetchedSeasons.map((season, idx) => {
@@ -49,6 +57,9 @@ const loadAnime = async () => {
     seasons.value = fetchedSeasons
     anime.value = seasons.value[0] || null
 
+    // ✅ Kullanıcının mevcut anime listesini yükle
+    await loadUserAnimeList()
+
   } catch (err: any) {
     console.error(err)
     error.value = err?.message || String(err)
@@ -57,6 +68,7 @@ const loadAnime = async () => {
   }
 }
 
+// ✅ Renkler
 const getEpisodeColor = (rating: number) => {
   if (rating >= 9) return "#02421e"
   if (rating >= 8) return "#047537"
@@ -65,10 +77,58 @@ const getEpisodeColor = (rating: number) => {
   return "#8474fc"
 }
 
+// ✅ Legend (sağ üstteki renk açıklamaları)
+const ratingLegend = [
+  { color: "#02421e", label: "9+" },
+  { color: "#047537", label: "8–8.9" },
+  { color: "#9b7806", label: "7–7.9" },
+  { color: "#e0d067", label: "6–6.9" },
+  { color: "#8474fc", label: "<6" },
+]
+
+// ✅ Listeyi yükleme
+const loadUserAnimeList = async () => {
+  try {
+    const list: any = await $fetch("/api/supabase/user_anime_list")
+    if (list?.all && Array.isArray(list.all)) {
+      addedAnimeIds.value = new Set(list.all.map((a: any) => a.id))
+    }
+  } catch (err) {
+    console.error("Kullanıcı anime listesi alınamadı:", err)
+  }
+}
+
+// ✅ Listeye ekle/çıkar
+const toggleAnimeInList = async () => {
+  if (!anime.value) return
+  const id = anime.value.id
+  const title = anime.value.title
+  const isInList = addedAnimeIds.value.has(id)
+
+  try {
+    await $fetch("/api/supabase/user_anime_list", {
+      method: "PUT",
+      body: { animeId: id }
+    })
+
+    if (isInList) {
+      addedAnimeIds.value.delete(id)
+      alertMessage.value = `${title} listenden çıkarıldı!`
+    } else {
+      addedAnimeIds.value.add(id)
+      alertMessage.value = `${title} listeye eklendi!`
+    }
+
+    showAlert.value = true
+    setTimeout(() => (showAlert.value = false), 2500)
+  } catch (err) {
+    console.error("Liste güncelleme hatası:", err)
+  }
+}
+
 onMounted(loadAnime)
 watch(() => route.params.id, () => loadAnime())
 </script>
-
 
 <template>
   <div class="tw-relative tw-min-h-screen tw-text-white">
@@ -117,18 +177,29 @@ watch(() => route.params.id, () => loadAnime())
                   </span>
                 </div>
 
-                <div class="tw-flex tw-flex-col md:tw-flex-row tw-gap-3 tw-flex-wrap tw-mt-4">
-                  <v-btn :href="anizleUrl" color="orange" class="tw-text-white">
+                <div
+                    class="tw-flex tw-flex-col md:tw-flex-row tw-gap-3 md:tw-gap-4 tw-flex-wrap tw-mt-4 md:tw-items-center"
+                >
+                  <v-btn :href="anizleUrl" color="orange" class="tw-text-white md:tw-flex-1">
                     <v-icon start>mdi-play</v-icon>
                     İzle
                   </v-btn>
-                  <v-btn :href="anizleUrl" variant="tonal" color="orange" class="tw-text-white">
+
+                  <v-btn :href="anizleUrl" variant="tonal" color="orange" class="tw-text-white md:tw-flex-1">
                     <v-icon start>mdi-play</v-icon>
                     Fragmanı İzle
                   </v-btn>
-                  <v-btn variant="outlined" color="orange" class="tw-border-orange-500 tw-text-white">
-                    <v-icon start>mdi-bookmark</v-icon>
-                    LİSTEME Ekle
+
+                  <v-btn
+                      color="orange"
+                      :variant="addedAnimeIds.has(anime.id) ? 'flat' : 'outlined'"
+                      class="tw-border-orange-500 tw-text-white md:tw-flex-1"
+                      @click.prevent="toggleAnimeInList"
+                  >
+                    <v-icon start>
+                      {{ addedAnimeIds.has(anime.id) ? 'mdi-check' : 'mdi-bookmark' }}
+                    </v-icon>
+                    {{ addedAnimeIds.has(anime.id) ? 'Listeye Eklendi' : 'Listeme Ekle' }}
                   </v-btn>
                 </div>
               </div>
@@ -153,16 +224,16 @@ watch(() => route.params.id, () => loadAnime())
                 tw-gap-6 tw-items-center md:tw-ml-4 px-4">
                   <div class="tw-flex tw-flex-col tw-items-center">
                     <span class="tw-text-xs tw-text-gray-400 tw-mb-1">MyAnimeList</span>
-                      <v-progress-circular
-                          :model-value="(anime.mean || 0) * 10"
-                          :size="$vuetify.display.mdAndUp ? 150 : 80"
-                          width="6"
-                          color="blue"
-                      >
-                        <span class="tw-text-base md:tw-text-lg tw-font-bold">
-                          {{ anime.mean || 0 }}
-                        </span>
-                      </v-progress-circular>
+                    <v-progress-circular
+                        :model-value="(anime.mean || 0) * 10"
+                        :size="$vuetify.display.mdAndUp ? 150 : 80"
+                        width="6"
+                        color="blue"
+                    >
+                      <span class="tw-text-base md:tw-text-lg tw-font-bold">
+                        {{ anime.mean || 0 }}
+                      </span>
+                    </v-progress-circular>
                     <span class="tw-text-xs tw-text-gray-400 tw-mt-1">
                       {{ anime.num_scoring_users?.toLocaleString() || 0 }}
                     </span>
@@ -195,23 +266,47 @@ watch(() => route.params.id, () => loadAnime())
             </v-tab>
           </v-tabs>
 
-          <v-tabs-window v-if="!pending && seasons.length" v-model="activeSeason" class="tw-w-full tw-flex-1 tw-min-h-[800px] md:tw-min-h-80">
-            <v-tabs-window-item v-for="(season, index) in seasons" :key="index" :value="index">
-              <v-row class="tw-flex-nowrap tw-gap-5 tw-ml-5 px-5 py-10 tw-text-white">
-                <v-chip
+          <v-tabs-window
+              v-if="!pending && seasons.length"
+              v-model="activeSeason"
+              class="tw-w-full tw-flex-1 tw-min-h-[800px] md:tw-min-h-80 tw-relative"
+          >
+            <!-- Sağ üstte renk göstergesi -->
+            <div class="tw-absolute tw-top-4 tw-right-4 tw-flex tw-items-center tw-gap-4 tw-flex-wrap tw-text-sm tw-text-white">
+              <div v-for="(item, i) in ratingLegend" :key="i" class="tw-flex tw-items-center tw-gap-2">
+                <span
+                    class="tw-inline-block tw-rounded-full tw-w-4 tw-h-4"
+                    :style="{ backgroundColor: item.color }"
+                ></span>
+                <span>{{ item.label }}</span>
+              </div>
+            </div>
+
+            <v-tabs-window-item
+                v-for="(season, index) in seasons"
+                :key="index"
+                :value="index"
+            >
+              <div
+                  class="tw-grid tw-gap-5 tw-p-6 py-10 tw-text-white
+         tw-grid-cols-3 sm:tw-grid-cols-auto-fit sm:tw-grid-cols-[repeat(auto-fit,minmax(120px,1fr))]"
+              >
+                <div
                     v-for="episode in season.episodes"
                     :key="episode.name"
-                    medium
-                    variant="flat"
-                    :color="getEpisodeColor(episode.rating)"
-                    class="tw-px-4 tw-py-3 tw-text-lg tw-justify-center"
-                    :style="{
-                      padding: '20px',
-                      minWidth: '120px'
-                    }">
-                  {{ episode.name }}
-                </v-chip>
-              </v-row>
+                    class="tw-flex tw-justify-center"
+                >
+                  <v-chip
+                      medium
+                      variant="flat"
+                      :color="getEpisodeColor(episode.rating)"
+                      class="tw-px-4 tw-py-3 tw-text-lg tw-justify-center tw-text-center"
+                      :style="{ minWidth: '100px' }"
+                  >
+                    {{ episode.name }}
+                  </v-chip>
+                </div>
+              </div>
             </v-tabs-window-item>
           </v-tabs-window>
 
@@ -222,5 +317,15 @@ watch(() => route.params.id, () => loadAnime())
         </v-card>
       </div>
     </v-img>
+
+    <!-- ✅ Sağ altta bildirim -->
+    <v-alert
+        v-if="showAlert"
+        type="success"
+        variant="flat"
+        style="position: fixed; bottom: 16px; right: 16px; z-index: 9999;"
+    >
+      {{ alertMessage }}
+    </v-alert>
   </div>
 </template>

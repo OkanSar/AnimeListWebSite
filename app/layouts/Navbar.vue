@@ -129,11 +129,15 @@ const userName = computed(() => {
         <v-list-item>
           <v-menu v-model="mobileUserMenu" offset-y>
             <template #activator="{ props }">
-              <v-btn v-bind="props" block text class="transparent-bar">
-                <v-avatar size="32" class="mr-2">
-                  <img :src="userAvatar" alt="Kullanıcı avatarı" />
+              <v-btn v-bind="props" block text class="transparent-bar tw-flex tw-items-center tw-justify-start">
+                <v-avatar size="32" class="mr-2 tw-bg-transparent tw-overflow-hidden">
+                  <img
+                      :src="userAvatar"
+                      alt="Kullanıcı avatarı"
+                      class="tw-w-full tw-h-full tw-object-contain"
+                  />
                 </v-avatar>
-                {{ userName }}
+                <span class="tw-truncate">{{ userName }}</span>
               </v-btn>
             </template>
 

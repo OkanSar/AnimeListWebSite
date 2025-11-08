@@ -60,7 +60,7 @@ onMounted(() => {
 <template>
   <o-hero-slider :slides="slides" :pending="pending" />
   <o-most-populer-animes :anime="poppulerAnimes" :pending="pending" />
-  <o-new-upcoming-animes />
+<!--  <o-new-upcoming-animes />-->
   <o-suggestion-animes :suggest="suggestedAnimes" :pending="pending" />
   <o-more-upcoming-animes :upcoming="upcomingAnimes" :pending="pending" />
 </template>
