@@ -1,73 +1,63 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import image1 from '~/assets/images/the-fragant-flower-blooms.jpg'
 
 const pending = ref(false)
 const showAlert = ref(false)
 const alertMessage = ref('')
-const products = ref([
-  {
-    id: 1,
-    name: 'Naruto Hoodie',
-    image: image1,
-    price: 399,
-    rating: 4.5,
-    rateCount: 7621
-  },
-  {
-    id: 2,
-    name: 'One Piece Figür',
-    image: image1,
-    price: 249,
-    rating: 4.8,
-    rateCount: 1872
-  },
-  {
-    id: 3,
-    name: 'Attack on Titan Poster',
-    image: image1,
-    price: 99,
-    rating: 4.2,
-    rateCount: 2524
-  },
-  {
-    id: 4,
-    name: 'Jujutsu Kaisen - Gojo Satoru Figür',
-    image: image1,
-    price: 1299,
-    rating: 4.2,
-    rateCount: 2524
-  },
-  {
-    id: 5,
-    name: 'The Eminence in Shadow Figür',
-    image: image1,
-    price: 1100,
-    rating: 4.8,
-    rateCount: 881
-  },
-  {
-    id: 6,
-    name: 'Demon Slayer Nichirin Kılıcı',
-    image: image1,
-    price: 4999,
-    rating: 4.9,
-    rateCount: 9125
-  },
-])
-const categories = ref([
-  { id: 1, name: 'FİGÜR' },
-  { id: 2, name: 'MANGA' },
-  { id: 3, name: 'POSTER' },
-  { id: 4, name: 'OYUN KARTLARI' },
-  { id: 5, name: 'GİYİM' },
-  { id: 6, name: 'AKSESUARLAR' },
-  { id: 7, name: 'DİĞER' },
-])
+const products = ref<any[]>([])
+const categories = ref<any[]>([])
+const favoriteProductIds = ref(new Set<number>())
+const searchQuery = ref('') // 🔍 arama metni
 
-const favoriteProductIds = ref(new Set())
+const route = useRoute()
+const router = useRouter()
+const selectedCategorySlug = ref<string | null>(null)
 
-function toggleFavorite(product) {
+function slugify(name: string) {
+  return name
+      .toLowerCase()
+      .replaceAll('ı', 'i')
+      .replaceAll('ğ', 'g')
+      .replaceAll('ü', 'u')
+      .replaceAll('ş', 's')
+      .replaceAll('ö', 'o')
+      .replaceAll('ç', 'c')
+      .replace(/\s+/g, '-')
+}
+
+async function fetchData() {
+  try {
+    pending.value = true
+    const productRes = await $fetch('/api/supabase/product')
+    const categoryRes = await $fetch('/api/supabase/product/category')
+
+    if (productRes.error || categoryRes.error)
+      throw new Error(productRes.error || categoryRes.error)
+
+    products.value = productRes.products || []
+    categories.value = categoryRes.products || []
+  } catch (err: any) {
+    console.error('Veri çekme hatası:', err)
+    showMessage('Veriler alınamadı: ' + err.message)
+  } finally {
+    pending.value = false
+  }
+}
+
+onMounted(() => {
+  fetchData()
+  if (route.query.category) {
+    selectedCategorySlug.value = String(route.query.category)
+  }
+})
+
+watch(() => route.query.category, (val) => {
+  selectedCategorySlug.value = val ? String(val) : null
+})
+
+function toggleFavorite(product: any) {
   if (favoriteProductIds.value.has(product.id)) {
     favoriteProductIds.value.delete(product.id)
     showMessage('Favorilerden çıkarıldı')
@@ -77,27 +67,73 @@ function toggleFavorite(product) {
   }
 }
 
-function addToCart(product) {
+function addToCart(product: any) {
   showMessage(`${product.name} sepete eklendi!`)
 }
 
-function showMessage(msg) {
+function showMessage(msg: string) {
   alertMessage.value = msg
   showAlert.value = true
   setTimeout(() => (showAlert.value = false), 1500)
 }
+
+function selectCategory(category: any | null) {
+  selectedCategorySlug.value = category ? slugify(category.name) : null
+  router.push({
+    query: category ? { category: slugify(category.name) } : {},
+  })
+}
+
+// 🔹 Filtreli ürünler (kategori + arama)
+const filteredProducts = computed(() => {
+  let list = products.value
+
+  if (selectedCategorySlug.value) {
+    const selectedCategory = categories.value.find(
+        c => slugify(c.name) === selectedCategorySlug.value
+    )
+    if (selectedCategory) {
+      list = list.filter(p => p.category_id === selectedCategory.id)
+    }
+  }
+
+  if (searchQuery.value.trim() !== '') {
+    const q = searchQuery.value.toLowerCase()
+    list = list.filter(p => p.name.toLowerCase().includes(q))
+  }
+
+  return list
+})
 </script>
 
 <template>
   <v-card class="mx-auto mt-10" max-width="1200" color="black">
     <div class="tw-px-4 tw-pt-4">
-      <o-search-bar :index="1" :pending="pending" class="tw-w-full" />
+      <o-search-bar
+          v-model="searchQuery"
+          :index="1"
+          :pending="pending"
+          :text="`Aradığınız Ürün...`"
+          class="tw-w-full"
+      />
     </div>
 
     <div class="tw-px-4 tw-mt-3 tw-mb-10">
-      <div
-          class="tw-flex tw-gap-2 tw-w-full tw-justify-between tw-flex-wrap md:tw-flex-nowrap"
-      >
+      <div class="tw-flex tw-gap-2 tw-w-full tw-justify-between tw-flex-wrap md:tw-flex-nowrap">
+        <div class="tw-flex-1 tw-text-center">
+          <v-btn
+              variant="outlined"
+              color="orange"
+              size="small"
+              class="tw-w-full tw-text-white tw-border-orange-500 hover:tw-text-black tw-transition"
+              :class="{ 'tw-bg-orange-500 tw-text-black': !selectedCategorySlug }"
+              @click="selectCategory(null)"
+          >
+            TÜMÜ
+          </v-btn>
+        </div>
+
+        <!-- Dinamik Kategoriler -->
         <div
             v-for="category in categories"
             :key="category.id"
@@ -108,6 +144,10 @@ function showMessage(msg) {
               color="orange"
               size="small"
               class="tw-w-full tw-text-white tw-border-orange-500 hover:tw-text-black tw-transition"
+              :class="{
+              'tw-bg-orange-500 tw-text-black': slugify(category.name) === selectedCategorySlug
+            }"
+              @click="selectCategory(category)"
           >
             {{ category.name }}
           </v-btn>
@@ -115,6 +155,7 @@ function showMessage(msg) {
       </div>
     </div>
 
+    <!-- 🔹 Ürünler -->
     <v-row class="tw-px-4 tw-pt-4 tw-pb-8">
       <v-col
           v-if="pending"
@@ -129,7 +170,7 @@ function showMessage(msg) {
 
       <v-col
           v-else
-          v-for="product in products"
+          v-for="product in filteredProducts"
           :key="product.id"
           cols="6"
           md="4"
@@ -138,18 +179,16 @@ function showMessage(msg) {
         <v-card
             class="tw-h-full tw-relative tw-overflow-hidden tw-bg-zinc-900 tw-transition tw-duration-200 hover:tw-scale-[1.02] hover:tw-shadow-lg"
             :to="`/products/${product.id}`"
+            color="black"
         >
           <v-img
-              :src="product.image"
+              :src="product.image || image1"
               height="220"
               cover
               class="tw-rounded-b-none"
-          ></v-img>
+          />
 
-          <!-- Aksiyon Butonları -->
-          <div
-              class="tw-absolute tw-top-2 tw-right-2 tw-flex tw-flex-col tw-gap-1 tw-z-10"
-          >
+          <div class="tw-absolute tw-top-2 tw-right-2 tw-flex tw-flex-col tw-gap-1 tw-z-10">
             <v-btn
                 icon
                 size="x-small"
@@ -158,11 +197,9 @@ function showMessage(msg) {
                 class="tw-bg-black/60 tw-text-white"
                 @click.stop.prevent="toggleFavorite(product)"
             >
-              <v-icon>{{
-                  favoriteProductIds.has(product.id)
-                      ? 'mdi-heart'
-                      : 'mdi-heart-outline'
-                }}</v-icon>
+              <v-icon>
+                {{ favoriteProductIds.has(product.id) ? 'mdi-heart' : 'mdi-heart-outline' }}
+              </v-icon>
             </v-btn>
 
             <v-btn
@@ -177,7 +214,6 @@ function showMessage(msg) {
             </v-btn>
           </div>
 
-          <!-- Ürün Bilgileri -->
           <div class="tw-px-2 tw-py-3 tw-text-white tw-flex tw-flex-col tw-gap-1">
             <div class="tw-font-semibold tw-text-sm tw-truncate">
               {{ product.name }}
@@ -187,15 +223,20 @@ function showMessage(msg) {
                 {{ product.price }}₺
               </span>
               <span class="tw-text-gray-400 tw-text-xs">
-                5 / {{ product.rating }} ({{product.rateCount}})
+                ⭐ {{ product.rating }} ({{ product.rate_count || 0 }})
               </span>
             </div>
           </div>
         </v-card>
       </v-col>
     </v-row>
+    <div
+        class="tw-fixed tw-bottom-4 tw-right-4 tw-bg-black/80 tw-text-white tw-px-4 tw-py-2 tw-rounded-md tw-text-sm tw-flex tw-items-center tw-gap-2 tw-z-50"
+    >
+      <v-icon color="red" small>mdi-alert-circle</v-icon>
+      <p class="tw-m-0">Bütün ürünler örnektir, yapım aşamasında örnek olarak kullanılmaktadır...</p>
+    </div>
 
-    <!-- Sağ Alt Bildirim -->
     <v-alert
         v-if="showAlert"
         type="success"
@@ -204,12 +245,6 @@ function showMessage(msg) {
     >
       {{ alertMessage }}
     </v-alert>
-  </v-card>
-
-  <v-card color="black" class="tw-relative tw-h-20 tw-text-white">
-    <div class="tw-absolute tw-bottom-2 tw-right-3 tw-text-sm tw-opacity-80">
-      <h3>Yapım aşamasındadır, bütün hepsi örnektir...</h3>
-    </div>
   </v-card>
 </template>
 

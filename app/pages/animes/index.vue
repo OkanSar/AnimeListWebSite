@@ -84,7 +84,9 @@ watch(page, () => {
 <template>
   <v-card class="mx-auto mt-10" max-width="1200" color="black">
     <o-search-bar
+        v-model="searchQuery"
         :index="1"
+        text="Aradığınız animeyi yazınız..."
         @search="onSearch"
         @input="onSearch"
         @update:modelValue="onSearch"

@@ -3,10 +3,13 @@ import { ref, defineProps, defineEmits } from 'vue'
 
 const props = defineProps<{
   index: number,
-  pending: boolean
+  text: string,
+  pending: boolean,
+  modelValue?: string   // ✅ v-model için eklendi
 }>()
 
 const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void   // ✅ v-model emit'i
   (e: 'search', value: string): void
   (e: 'filter-applied', sort: string | null, categories: string[]): void
 }>()
@@ -23,15 +26,18 @@ const sortOptions = [
   { label: 'Değerlendirmesine göre', key: 'reviews' }
 ]
 
-const categories = ['Aksiyon', 'Macera', 'Doğaüstü', 'Romantik', 'Büyü', 'Gerilim', 'Gizem', 'Korku', 'Okul', 'Seinen']
+const categories = [
+  'Aksiyon', 'Macera', 'Doğaüstü', 'Romantik', 'Büyü',
+  'Gerilim', 'Gizem', 'Korku', 'Okul', 'Seinen'
+]
 
 function onClickSearch() {
   loading.value = true
   setTimeout(() => {
     loading.value = false
     loaded.value = true
-    emit('search', `Arama yapıldı! Index: ${props.index}`)
-  }, 1000)
+    emit('search', props.modelValue || '')
+  }, 500)
 }
 
 function toggleSort(optionKey: string) {
@@ -62,69 +68,81 @@ function applyFilters(menuRef: any) {
     <v-text-field
         v-else
         density="compact"
-        label="Aradığınız Anime . . ."
+        :label="props.text"
         variant="outlined"
         hide-details
         single-line
         color="orange"
         class="tw-font-bold tw-mt-14"
         :loading="loading"
+        :model-value="props.modelValue"
+        @update:model-value="val => emit('update:modelValue', val)"
         @keydown.enter="onClickSearch"
     >
-      <template #append-inner>
-        <v-icon class="tw-cursor-pointer tw-opacity-100" @click="onClickSearch" color="orange">
-          mdi-magnify
-        </v-icon>
+    <template #append-inner>
+      <v-icon
+          class="tw-cursor-pointer tw-opacity-100"
+          @click="onClickSearch"
+          color="orange"
+      >
+        mdi-magnify
+      </v-icon>
 
-        <v-divider vertical color="white" class="mx-2 border-opacity-75" />
+      <v-divider vertical color="white" class="mx-2 border-opacity-75" />
 
-        <v-menu location="bottom end" offset="8" :close-on-content-click="false" ref="filterMenu">
-          <template #activator="{ props }">
-            <v-icon v-bind="props" class="tw-cursor-pointer tw-opacity-100" color="orange">
-              mdi-filter-variant
-            </v-icon>
-          </template>
+      <v-menu location="bottom end" offset="8" :close-on-content-click="false" ref="filterMenu">
+        <template #activator="{ props }">
+          <v-icon v-bind="props" class="tw-cursor-pointer tw-opacity-100" color="orange">
+            mdi-filter-variant
+          </v-icon>
+        </template>
 
-          <v-card min-width="250" max-width="500" class="bg-gray-800 tw-text-white">
-            <v-list>
-              <v-list-subheader class="tw-text-orange tw-font-bold">
-                Filtrele
-              </v-list-subheader>
+        <v-card min-width="250" max-width="500" class="bg-gray-800 tw-text-white">
+          <v-list>
+            <v-list-subheader class="tw-text-orange tw-font-bold">
+              Filtrele
+            </v-list-subheader>
 
-              <v-list-item
-                  v-for="option in sortOptions"
-                  :key="option.key"
-                  @click="toggleSort(option.key)"
-                  class="tw-cursor-pointer"
+            <v-list-item
+                v-for="option in sortOptions"
+                :key="option.key"
+                @click="toggleSort(option.key)"
+                class="tw-cursor-pointer"
+            >
+              <v-list-item-title class="tw-flex tw-justify-between tw-items-center">
+                {{ option.label }}
+                <v-icon small v-if="selectedSort === option.key">mdi-check</v-icon>
+              </v-list-item-title>
+            </v-list-item>
+
+            <v-divider class="my-2" />
+
+            <v-list-subheader class="tw-text-orange tw-font-bold">
+              Kategorilere göre
+            </v-list-subheader>
+
+            <v-chip-group multiple selected-class="bg-orange-600">
+              <v-chip
+                  v-for="cat in categories"
+                  :key="cat"
+                  @click="toggleCategory(cat)"
               >
-                <v-list-item-title class="tw-flex tw-justify-between tw-items-center">
-                  {{ option.label }}
-                  <v-icon small v-if="selectedSort === option.key">mdi-check</v-icon>
-                </v-list-item-title>
-              </v-list-item>
+                {{ cat }}
+                <v-icon small v-if="selectedCategories.includes(cat)">mdi-check</v-icon>
+              </v-chip>
+            </v-chip-group>
 
-              <v-divider class="my-2" />
+            <v-divider class="my-2" />
 
-              <v-list-subheader class="tw-text-orange tw-font-bold">Kategorilere göre</v-list-subheader>
-
-              <v-chip-group multiple selected-class="bg-orange-600">
-                <v-chip v-for="cat in categories" :key="cat" @click="toggleCategory(cat)">
-                  {{ cat }}
-                  <v-icon small v-if="selectedCategories.includes(cat)">mdi-check</v-icon>
-                </v-chip>
-              </v-chip-group>
-
-              <v-divider class="my-2" />
-
-              <v-list-item class="tw-justify-center">
-                <v-btn color="orange" variant="outlined" @click="applyFilters($refs.filterMenu)">
-                  Filtrele
-                </v-btn>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-menu>
-      </template>
+            <v-list-item class="tw-justify-center">
+              <v-btn color="orange" variant="outlined" @click="applyFilters($refs.filterMenu)">
+                Filtrele
+              </v-btn>
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
+    </template>
     </v-text-field>
   </div>
 </template>
