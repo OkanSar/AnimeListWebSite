@@ -67,8 +67,24 @@ function toggleFavorite(product: any) {
   }
 }
 
-function addToCart(product: any) {
-  showMessage(`${product.name} sepete eklendi!`)
+async function addToCart(product: any) {
+  try {
+    showMessage('Sepete ekleniyor...')
+
+    const res = await $fetch('/api/supabase/cart', {
+      method: 'POST',
+      body: { product_id: product.id, quantity: 1 }
+    })
+
+    if (res.error) {
+      showMessage('Sepete eklenemedi: ' + res.message)
+    } else {
+      showMessage(`${product.name} sepete eklendi!`)
+    }
+  } catch (err: any) {
+    console.error(err)
+    showMessage('Sepete eklenirken hata oluştu: ' + err.message)
+  }
 }
 
 function showMessage(msg: string) {
