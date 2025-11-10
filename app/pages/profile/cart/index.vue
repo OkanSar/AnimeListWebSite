@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import imagePlaceholder from '~/assets/images/the-fragant-flower-blooms.jpg'
 
@@ -67,13 +66,11 @@ async function decrement(item: any) {
 }
 
 async function removeItem(item: any) {
-  await $fetch('/api/supabase/cart', {
-    method: 'DELETE',
-    body: { product_id: item.product_id }
+  await $fetch(`/api/supabase/cart?product_id=${item.product_id}`, {
+    method: 'DELETE'
   })
   items.value = items.value.filter(i => i.id !== item.id)
 }
-
 
 function checkout() {
   showMessage('Sipariş tamamlanıyor...')

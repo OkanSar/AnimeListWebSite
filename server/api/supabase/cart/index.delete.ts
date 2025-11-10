@@ -1,4 +1,3 @@
-// ~/server/api/supabase/cart/index.delete.ts
 import { serverSupabaseClient, serverSupabaseUser } from '#supabase/server'
 
 export default defineEventHandler(async (event) => {
@@ -10,15 +9,13 @@ export default defineEventHandler(async (event) => {
         return { error: true, message: 'Unauthorized' }
     }
 
-    const body = await readBody(event)
-    const { product_id } = body
+    const { product_id } = getQuery(event)
 
     if (!product_id) {
         return { error: true, message: 'Ürün ID gerekli.' }
     }
 
     try {
-        // Aktif sepeti bul
         const { data: cart } = await client
             .from('carts')
             .select('*')
@@ -30,7 +27,6 @@ export default defineEventHandler(async (event) => {
             return { error: true, message: 'Aktif sepet bulunamadı.' }
         }
 
-        // Ürünü sepette bul
         const { data: existingItem } = await client
             .from('cart_items')
             .select('*')
@@ -42,7 +38,6 @@ export default defineEventHandler(async (event) => {
             return { error: true, message: 'Ürün sepette yok.' }
         }
 
-        // Ürünü sil
         const { error: deleteError } = await client
             .from('cart_items')
             .delete()
@@ -50,7 +45,6 @@ export default defineEventHandler(async (event) => {
 
         if (deleteError) throw deleteError
 
-        // Toplam fiyatı yeniden hesapla
         const { data: items } = await client
             .from('cart_items')
             .select(`quantity, products(price)`)
@@ -66,12 +60,7 @@ export default defineEventHandler(async (event) => {
             .update({ total_price: totalPrice })
             .eq('id', cart.id)
 
-        return {
-            error: false,
-            message: 'Ürün sepetten silindi.',
-            cart_id: cart.id,
-            total_price: totalPrice
-        }
+        return { error: false, message: 'Ürün sepetten silindi.', total_price: totalPrice }
     } catch (err: any) {
         console.error('Sepetten silme hatası:', err)
         return { error: true, message: err.message || 'Ürün silinemedi.' }
