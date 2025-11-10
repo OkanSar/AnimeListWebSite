@@ -2,7 +2,6 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import imagePlaceholder from '~/assets/images/the-fragant-flower-blooms.jpg'
-import image1 from "~/assets/images/the-fragant-flower-blooms.jpg";
 
 const route = useRoute()
 const productId = Number(route.params.id)
@@ -10,11 +9,21 @@ const productId = Number(route.params.id)
 const product = ref<any>(null)
 const relatedProducts = ref<any[]>([])
 const pending = ref(true)
-const showAlert = ref(false)
-const alertMessage = ref('')
+const addingToCart = ref(false)
 const favorite = ref(false)
 
-// Ürün detayını çek
+const snackbar = ref(false)
+const snackbarText = ref('')
+const snackbarColor = ref('success')
+
+function showSnackbar(msg: string, color: string = 'success') {
+  snackbarText.value = msg
+  snackbarColor.value = color
+  snackbar.value = true
+  setTimeout(() => (snackbar.value = false), 2000)
+}
+
+// 🟢 Ürünü getir
 async function fetchProduct() {
   try {
     pending.value = true
@@ -22,36 +31,88 @@ async function fetchProduct() {
     if (res.error) throw new Error(res.error)
     product.value = res.product
 
-    // Aynı kategorideki diğer ürünler
     if (product.value?.category_id) {
       const relatedRes = await $fetch(`/api/supabase/product?category_id=${product.value.category_id}`)
       if (relatedRes.error) throw new Error(relatedRes.error)
       relatedProducts.value = relatedRes.products.filter((p: any) => p.id !== product.value.id)
     }
 
+    // 🧡 Favori kontrolü
+    await checkFavorite()
   } catch (err: any) {
     console.error(err)
-    showMessage('Ürün yüklenemedi: ' + err.message)
+    showSnackbar('Ürün yüklenemedi.', 'error')
   } finally {
     pending.value = false
   }
 }
 
-onMounted(() => fetchProduct())
-
-function toggleFavorite() {
-  favorite.value = !favorite.value
-  showMessage(favorite.value ? 'Favorilere eklendi' : 'Favorilerden çıkarıldı')
+// 🧡 Bu ürün favorilerde mi kontrol et
+async function checkFavorite() {
+  try {
+    const res = await $fetch(`/api/supabase/favorites`)
+    if (res.error) return
+    favorite.value = res.favorites.some((f: any) => f.products.id === productId)
+  } catch (err) {
+    console.error('Favori kontrol hatası:', err)
+  }
 }
 
-function addToCart() {
-  showMessage(`${product.value?.name} sepete eklendi!`)
+// 🧡 Favoriye ekle / kaldır
+async function toggleFavorite() {
+  if (!product.value) return
+
+  try {
+    if (favorite.value) {
+      // 🔴 Favoriden kaldır
+      const res = await $fetch('/api/supabase/favorites', {
+        method: 'DELETE',
+        body: { product_id: product.value.id }
+      })
+      if (res.error) throw new Error(res.message)
+      favorite.value = false
+      showSnackbar('Favorilerden kaldırıldı', 'error')
+    } else {
+      // 🟢 Favoriye ekle
+      const res = await $fetch('/api/supabase/favorites', {
+        method: 'POST',
+        body: { product_id: product.value.id }
+      })
+      if (res.status === 401) {
+        showSnackbar('Favorilere eklemek için giriş yapmalısınız.', 'error')
+        return
+      }
+      if (res.error) throw new Error(res.message)
+      favorite.value = true
+      showSnackbar('Favorilere eklendi')
+    }
+  } catch (err: any) {
+    console.error('Favori hatası:', err)
+    showSnackbar('İşlem yapılamadı.', 'error')
+  }
 }
 
-function showMessage(msg: string) {
-  alertMessage.value = msg
-  showAlert.value = true
-  setTimeout(() => (showAlert.value = false), 1500)
+// 🛒 Sepete ekle
+async function addToCart() {
+  if (!product.value) return
+  addingToCart.value = true
+  try {
+    const res = await $fetch('/api/supabase/cart', {
+      method: 'POST',
+      body: { product_id: product.value.id, quantity: 1 }
+    })
+
+    if (res.error) {
+      showSnackbar('Sepete eklenemedi: ' + res.message, 'error')
+    } else {
+      showSnackbar(`🛍️ ${product.value.name} sepete eklendi!`)
+    }
+  } catch (err: any) {
+    console.error(err)
+    showSnackbar('Sepete eklenirken bir hata oluştu.', 'error')
+  } finally {
+    addingToCart.value = false
+  }
 }
 
 const ratingStars = computed(() => {
@@ -61,6 +122,8 @@ const ratingStars = computed(() => {
   const empty = 5 - full - half
   return [...Array(full).fill('full'), ...Array(half).fill('half'), ...Array(empty).fill('empty')]
 })
+
+onMounted(() => fetchProduct())
 </script>
 
 <template>
@@ -106,12 +169,24 @@ const ratingStars = computed(() => {
           </p>
 
           <div class="tw-flex tw-gap-4 tw-mt-4">
-            <v-btn color="orange" class="tw-font-semibold tw-flex-1" @click="addToCart">
-              <v-icon left>mdi-cart-plus</v-icon> Sepete Ekle
+            <v-btn
+                color="orange"
+                class="tw-font-semibold tw-flex-1"
+                @click="addToCart"
+                :loading="addingToCart"
+                :disabled="addingToCart"
+            >
+              <v-icon left>mdi-cart-plus</v-icon>
+              {{ addingToCart ? 'Ekleniyor...' : 'Sepete Ekle' }}
             </v-btn>
 
-            <v-btn :color="favorite ? 'red' : 'grey darken-1'" class="tw-font-semibold tw-flex-1" @click="toggleFavorite">
-              <v-icon left>mdi-heart</v-icon> Favori
+            <v-btn :color="favorite ? 'red' : 'grey darken-1'"
+                   :variant="favorite ? 'flat' : 'outlined'"
+                   class="tw-font-semibold tw-flex-1"
+                   @click="toggleFavorite"
+            >
+              <v-icon left class="mr-2">mdi-heart</v-icon>
+              {{ favorite ? 'FAVORİLERDE':'FAVORİLERE EKLE' }}
             </v-btn>
           </div>
         </div>
@@ -176,14 +251,16 @@ const ratingStars = computed(() => {
       <p class="tw-m-0">Bütün ürünler örnektir, yapım aşamasında örnek olarak kullanılmaktadır...</p>
     </div>
 
-    <v-alert
-        v-if="showAlert"
-        type="success"
-        variant="flat"
-        style="position: fixed; bottom: 16px; right: 16px; z-index: 9999;"
+    <v-snackbar
+        v-model="snackbar"
+        :color="snackbarColor"
+        timeout="2000"
+        location="bottom right"
+        multi-line
+        rounded="lg"
     >
-      {{ alertMessage }}
-    </v-alert>
+      {{ snackbarText }}
+    </v-snackbar>
   </v-container>
 </template>
 

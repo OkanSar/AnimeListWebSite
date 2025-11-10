@@ -87,6 +87,7 @@ const userName = computed(() => {
             <v-list class="transparent-bar">
               <v-list-item to="/profile"><v-list-item-title>Profilim</v-list-item-title></v-list-item>
               <v-list-item to="/profile/my-list"><v-list-item-title>Listem</v-list-item-title></v-list-item>
+              <v-list-item to="/profile/favorites"><v-list-item-title>Favorilerim</v-list-item-title></v-list-item>
               <v-list-item to="/profile/cart"><v-list-item-title>Sepetim</v-list-item-title></v-list-item>
               <v-list-item @click="logout"><v-list-item-title>Çıkış Yap</v-list-item-title></v-list-item>
             </v-list>
@@ -144,6 +145,7 @@ const userName = computed(() => {
             <v-list class="transparent-bar">
               <v-list-item to="/profile" @click="drawer = false"><v-list-item-title>Profilim</v-list-item-title></v-list-item>
               <v-list-item to="/profile/my-list" @click="drawer = false"><v-list-item-title>Listem</v-list-item-title></v-list-item>
+              <v-list-item to="/profile/favorites" @click="drawer = false"><v-list-item-title>Favorilerim</v-list-item-title></v-list-item>
               <v-list-item to="/profile/cart" @click="drawer = false"><v-list-item-title>Sepetim</v-list-item-title></v-list-item>
               <v-list-item @click="logout"><v-list-item-title>Çıkış Yap</v-list-item-title></v-list-item>
             </v-list>

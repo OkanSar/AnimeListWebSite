@@ -79,16 +79,15 @@ function checkout() {
 </script>
 
 <template>
-  <v-container class="tw-mt-20 tw-max-w-6xl mx-auto">
+  <v-container class="tw-mt-24 tw-max-w-6xl mx-auto">
     <h1 class="tw-text-3xl tw-font-bold tw-text-orange-400">Sepetim</h1>
     <v-divider color="warning" class="tw-mb-6 mt-2" />
 
     <!-- Loading -->
     <div v-if="pending" class="tw-space-y-4">
-      <v-skeleton-loader type="list-item" class="tw-h-24" v-for="n in 3" :key="n"/>
+      <v-skeleton-loader color="black"  type="list-item" class="tw-h-24" v-for="n in 3" :key="n"/>
     </div>
 
-    <!-- Boş sepet -->
     <!-- Boş sepet -->
     <div v-else-if="!items.length" class="tw-flex tw-flex-col tw-items-center tw-justify-center tw-gap-4 tw-mt-20">
       <!-- Büyük sepet ikonu -->

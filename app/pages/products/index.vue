@@ -135,7 +135,10 @@ const filteredProducts = computed(() => {
     </div>
 
     <div class="tw-px-4 tw-mt-3 tw-mb-10">
-      <div class="tw-flex tw-gap-2 tw-w-full tw-justify-between tw-flex-wrap md:tw-flex-nowrap">
+      <div v-if="pending">
+        <v-skeleton-loader color="black" type="text" class="tw-w-full tw-h-10 tw-rounded-md"/>
+      </div>
+      <div v-else class="tw-flex tw-gap-2 tw-w-full tw-justify-between tw-flex-wrap md:tw-flex-nowrap">
         <div class="tw-flex-1 tw-text-center">
           <v-btn
               variant="outlined"
@@ -148,8 +151,6 @@ const filteredProducts = computed(() => {
             TÜMÜ
           </v-btn>
         </div>
-
-        <!-- Dinamik Kategoriler -->
         <div
             v-for="category in categories"
             :key="category.id"
@@ -183,7 +184,6 @@ const filteredProducts = computed(() => {
       >
         <v-skeleton-loader color="black" type="card" height="300px" />
       </v-col>
-
       <v-col
           v-else
           v-for="product in filteredProducts"
