@@ -6,42 +6,35 @@ const error = ref<Error | null>(null)
 const total = ref(0)
 const limit = 50
 const searchQuery = ref("")
-const animeCategories = ref([
-  { id: 1, name: "Aksiyon" },
-  { id: 2, name: "Macera" },
-  { id: 3, name: "Komedi" },
-  { id: 4, name: "Dram" },
-  { id: 5, name: "Ecchi" },
-  { id: 6, name: "Fantezi" },
-  { id: 7, name: "Oyun" },
-  { id: 8, name: "Harem" },
-  { id: 9, name: "Tarih" },
-  { id: 10, name: "Korku" },
-  { id: 11, name: "Josei" },
-  { id: 12, name: "Büyü" },
-  { id: 13, name: "Dövüş Sanatları" },
-  { id: 14, name: "Mecha" },
-  { id: 15, name: "Askeri" },
-  { id: 16, name: "Müzik" },
-  { id: 17, name: "Gizem" },
-  { id: 18, name: "Parodi" },
-  { id: 19, name: "Psikolojik" },
-  { id: 20, name: "Romantik" },
-  { id: 21, name: "Samuray" },
-  { id: 22, name: "Okul" },
-  { id: 23, name: "Bilim Kurgu" },
-  { id: 29, name: "Hayat Kesitleri" },
-  { id: 30, name: "Uzay" },
-  { id: 31, name: "Spor" },
-  { id: 32, name: "Süper Güç" },
-  { id: 33, name: "Doğaüstü" },
-  { id: 34, name: "Gerilim" },
-  { id: 35, name: "Vampir" },
-  { id: 36, name: "Yaoi" },
-  { id: 37, name: "Yuri" },
-  { id: 38, name: "Arabalar" },
-  { id: 39, name: "Bunama" },
-])
+// const animeCategories = ref([
+//   { id: 1, name: "Aksiyon" },
+//   { id: 2, name: "Macera" },
+//   { id: 3, name: "Komedi" },
+//   { id: 4, name: "Dram" },
+//   { id: 5, name: "Oyun" },
+//   { id: 6, name: "Tarih" },
+//   { id: 7, name: "Korku" },
+//   { id: 8, name: "Josei" },
+//   { id: 9, name: "Büyü" },
+//   { id: 10, name: "Mecha" },
+//   { id: 11, name: "Askeri" },
+//   { id: 12, name: "Müzik" },
+//   { id: 13, name: "Gizem" },
+//   { id: 14, name: "Parodi" },
+//   { id: 15, name: "Psikolojik" },
+//   { id: 16, name: "Romantik" },
+//   { id: 17, name: "Samuray" },
+//   { id: 18, name: "Okul" },
+//   { id: 19, name: "Bilim Kurgu" },
+//   { id: 20, name: "Hayat Kesitleri" },
+//   { id: 21, name: "Uzay" },
+//   { id: 22, name: "Spor" },
+//   { id: 23, name: "Süper Güç" },
+//   { id: 24, name: "Doğaüstü" },
+//   { id: 25, name: "Gerilim" },
+//   { id: 26, name: "Vampir" },
+//   { id: 27, name: "Arabalar" },
+// ])
 
 function onSearch(value: any) {
   const q = typeof value === "string" ? value.trim() : value?.target?.value || ""
@@ -92,7 +85,7 @@ watch(page, () => {
         @update:modelValue="onSearch"
         :pending="pending"
     />
-    <o-category-chip :categories="animeCategories" :pending="pending" />
+<!--    <o-category-chip :categories="animeCategories" :pending="pending" />-->
     <o-anime-list :anime-list="animeList" :pending="pending" :error="error" />
     <div class="text-center mt-4">
       <v-pagination

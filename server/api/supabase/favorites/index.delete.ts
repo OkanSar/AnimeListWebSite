@@ -9,8 +9,7 @@ export default defineEventHandler(async (event) => {
         return { error: true, message: 'Unauthorized' }
     }
 
-    const body = await readBody(event)
-    const { product_id } = body
+    const { product_id } = getQuery(event)
 
     if (!product_id) {
         return { error: true, message: 'Ürün ID gerekli.' }

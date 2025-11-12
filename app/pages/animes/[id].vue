@@ -83,7 +83,7 @@ const ratingLegend = [
   { color: "#047537", label: "8–8.9" },
   { color: "#9b7806", label: "7–7.9" },
   { color: "#e0d067", label: "6–6.9" },
-  { color: "#8474fc", label: "<6" },
+  { color: "#8474fc", label: "6-" },
 ]
 
 // ✅ Listeyi yükleme
@@ -140,9 +140,7 @@ watch(() => route.params.id, () => loadAnime())
       <div class="tw-relative tw-z-20 tw-w-[95%] md:tw-w-[90%] lg:tw-w-[80%] tw-mx-auto tw-pt-24">
 
         <v-card class="tw-rounded-2xl tw-shadow-lg tw-mt-36" elevation="8" color="black">
-
           <v-row class="tw-items-start tw-justify-between tw-px-4 md:tw-px-0">
-
             <v-col cols="12" md="6" class="tw-flex tw-flex-col tw-gap-6 md:tw-ml-10 tw-px-3 md:tw-px-0">
               <div v-if="pending">
                 <v-skeleton-loader color="black" type="heading, paragraph" class="tw-h-10 tw-mb-4"/>
@@ -178,7 +176,7 @@ watch(() => route.params.id, () => loadAnime())
                 </div>
 
                 <div
-                    class="tw-flex tw-flex-col md:tw-flex-row tw-gap-3 md:tw-gap-4 tw-flex-wrap tw-mt-4 md:tw-items-center"
+                    class="tw-flex tw-flex-col md:tw-flex-row tw-gap-3 md:tw-gap-4 tw-flex-wrap tw-mt-4 md:tw-items-center anime-buttons"
                 >
                   <v-btn :href="anizleUrl" color="orange" class="tw-text-white md:tw-flex-1">
                     <v-icon start>mdi-play</v-icon>
@@ -206,8 +204,7 @@ watch(() => route.params.id, () => loadAnime())
             </v-col>
 
             <v-col cols="12" md="5" class="tw-flex tw-justify-center md:tw-justify-end">
-              <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-items-center tw-gap-6">
-
+              <div class="tw-flex tw-flex-col-reverse md:tw-flex-row tw-items-center tw-gap-6 tablet-view">
                 <div v-if="pending">
                   <v-skeleton-loader color="black" type="image" class="tw-w-48 tw-h-64"/>
                 </div>
@@ -329,3 +326,19 @@ watch(() => route.params.id, () => loadAnime())
     </v-alert>
   </div>
 </template>
+
+<style scoped>
+@media screen and (min-width: 780px) and (max-width: 1366px) {
+  .tablet-view {
+    @apply tw-flex-col-reverse;
+  }
+  .anime-buttons {
+    @apply tw-flex-col tw-gap-4 tw-w-full;
+  }
+
+  .anime-buttons > .v-btn {
+    @apply tw-w-full;
+    min-height: 25px;
+  }
+}
+</style>

@@ -120,10 +120,11 @@ function checkout() {
               width="20"
               cover
               class="tw-rounded"
+              @click="router.push(`/products/${item.product_id}`)"
           />
           <div class="tw-flex-1 tw-flex tw-flex-col tw-justify-between">
             <div>
-              <div class="tw-text-white tw-font-semibold tw-text-sm truncate">{{ item.products?.name }}</div>
+              <div class="tw-text-white tw-font-semibold tw-text-sm truncate" @click="router.push(`/products/${item.product_id}`)">{{ item.products?.name }}</div>
               <div class="tw-text-gray-400 tw-mt-1">{{ item.products?.price }}₺</div>
             </div>
             <div class="tw-flex tw-items-center tw-justify-between tw-mt-2">
@@ -136,9 +137,11 @@ function checkout() {
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </div>
-              <v-btn size="x-small" icon color="red" @click="removeItem(item)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+              <div class="tw-flex tw-items-center tw-gap-2">
+                <v-btn size="x-small" icon color="red" @click="removeItem(item)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </div>
             </div>
           </div>
         </div>
@@ -152,9 +155,10 @@ function checkout() {
               :src="item.products?.image || imagePlaceholder"
               height="200"
               cover
+              @click="router.push(`/products/${item.product_id}`)"
           />
           <div class="tw-p-4 tw-flex tw-flex-col tw-gap-2">
-            <div class="tw-font-semibold tw-text-white tw-text-lg truncate">{{ item.products?.name }}</div>
+            <div class="tw-font-semibold tw-text-white tw-text-lg truncate cursor-pointer" @click="router.push(`/products/${item.product_id}`)">{{ item.products?.name }}</div>
             <div class="tw-text-orange-400 tw-font-bold">{{ item.products?.price }}₺</div>
             <div class="tw-flex tw-items-center tw-justify-between">
               <div class="tw-flex tw-items-center tw-gap-2">
@@ -166,9 +170,11 @@ function checkout() {
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </div>
-              <v-btn size="x-small" icon color="red" @click="removeItem(item)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+              <div class="tw-flex tw-items-center tw-gap-2">
+                <v-btn size="x-small" icon color="red" @click="removeItem(item)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
+              </div>
             </div>
           </div>
           <v-divider />
@@ -187,7 +193,6 @@ function checkout() {
       </v-card>
     </div>
 
-    <!-- Uyarı -->
     <v-alert
         v-if="showAlert"
         type="success"

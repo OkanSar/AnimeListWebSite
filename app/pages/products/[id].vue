@@ -64,10 +64,9 @@ async function toggleFavorite() {
 
   try {
     if (favorite.value) {
-      // 🔴 Favoriden kaldır
-      const res = await $fetch('/api/supabase/favorites', {
+      const product_id = product.value.id
+      const res = await $fetch(`/api/supabase/favorites?product_id=${product_id}`, {
         method: 'DELETE',
-        body: { product_id: product.value.id }
       })
       if (res.error) throw new Error(res.message)
       favorite.value = false

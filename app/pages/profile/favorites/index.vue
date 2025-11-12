@@ -35,9 +35,10 @@ async function fetchFavorites() {
 
 async function removeFavorite(item: any) {
   try {
-    const res = await $fetch('/api/supabase/favorites', {
-      method: 'DELETE',
-      body: { product_id: item.product_id || item.products.id }
+    const productId = item.product_id || item.products?.id
+
+    const res = await $fetch(`/api/supabase/favorites?product_id=${productId}`, {
+      method: 'DELETE'
     })
 
     if (res.error) throw new Error(res.message)
